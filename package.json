@@ -3,7 +3,10 @@
   "version": "0.0.1",
   "description": "Connect middleware for serving React components from a standard folder structure.",
   "main": "./lib/index.js",
-  "dependencies": {},
+  "dependencies": {
+    "express": "^4.13.3",
+    "react": "^0.13.3"
+  },
   "devDependencies": {
     "babel": "^5.6.14",
     "babel-core": "^5.6.18",
