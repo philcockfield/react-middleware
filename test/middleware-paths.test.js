@@ -57,25 +57,26 @@ describe("middleware.paths", function() {
 
 
   describe("folder creation", function() {
-    const deleteFolder = () => { fs.removeSync(fsPath.join(__dirname, "/sample")); };
+    const BASE_PATH = "./test/path-sample";
+    const deleteFolder = () => { fs.removeSync(fsPath.resolve(BASE_PATH)); };
     beforeEach(() => { deleteFolder(); });
     afterEach(() => { deleteFolder(); });
 
     it("does not have folders", () => {
-      const middleware = ReactServerPages({ base:"./test/sample" });
+      const middleware = ReactServerPages({ base: BASE_PATH });
       expect(middleware.paths.exist).to.equal(false);
     });
 
     it("creates folders", () => {
-      const middleware = ReactServerPages({ base:"./test/sample" });
+      const middleware = ReactServerPages({ base: BASE_PATH });
       middleware.paths.create();
       expect(middleware.paths.exist).to.equal(true);
     });
 
     it("has partial folders", () => {
-      ReactServerPages({ base:"./test/sample" }).paths.create();
-      fs.removeSync(fsPath.join(__dirname, "/sample/views/pages"));
-      const middleware = ReactServerPages({ base:"./test/sample" });
+      ReactServerPages({ base: BASE_PATH }).paths.create();
+      fs.removeSync(fsPath.resolve(BASE_PATH, "views/pages"));
+      const middleware = ReactServerPages({ base: BASE_PATH });
       expect(middleware.paths.exist).to.equal("partial");
     });
 
