@@ -35,6 +35,7 @@ export default (paths) => {
     routes: new TemplateFile("./routes.js", `${ paths.base }/routes.js`),
     html: new TemplateFile("./Html.jsx", `${ paths.layouts }/Html.jsx`),
     home: new TemplateFile("./Home.jsx", `${ paths.pages }/Home/Home.jsx`),
+    normalize: new TemplateFile("./normalize.css", `${ paths.css }/normalize.css`),
 
     /**
      * Creates all template files if they don't already exist.
