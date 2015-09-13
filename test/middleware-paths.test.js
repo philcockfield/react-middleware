@@ -6,7 +6,8 @@ import ReactServerPages from "../src";
 
 
 describe("middleware.paths", function() {
-  afterEach(() => { fs.removeSync(fsPath.resolve("./foo")); });
+  const deleteFooFolder = () => { fs.removeSync(fsPath.resolve("./foo")); };
+  afterEach(() => { deleteFooFolder(); });
 
 
   describe("base", function() {
@@ -16,8 +17,9 @@ describe("middleware.paths", function() {
     });
 
     it("has custom (absolute)", () => {
-      const middleware = ReactServerPages({ base: "/foo" });
-      expect(middleware.paths.base).to.equal("/foo");
+      const path = fsPath.resolve("./foo");
+      const middleware = ReactServerPages({ base: path });
+      expect(middleware.paths.base).to.equal(path);
     });
 
     it("has custom (relative)", () => {
@@ -37,21 +39,22 @@ describe("middleware.paths", function() {
     });
 
     it("has custom paths", () => {
+      const path = fsPath.resolve("./foo");
       const middleware = ReactServerPages({
-        base: "foo",
-        css: "foo",
-        public: "foo",
-        layouts: "foo",
-        components: "foo",
-        pages: "foo"
+        base: path,
+        css: path,
+        public: path,
+        layouts: path,
+        components: path,
+        pages: path
       });
       const paths = middleware.paths;
-      expect(paths.base).to.equal("foo");
-      expect(paths.css).to.equal("foo");
-      expect(paths.public).to.equal("foo");
-      expect(paths.layouts).to.equal("foo");
-      expect(paths.components).to.equal("foo");
-      expect(paths.pages).to.equal("foo");
+      expect(paths.base).to.equal(path);
+      expect(paths.css).to.equal(path);
+      expect(paths.public).to.equal(path);
+      expect(paths.layouts).to.equal(path);
+      expect(paths.components).to.equal(path);
+      expect(paths.pages).to.equal(path);
     });
   });
 
