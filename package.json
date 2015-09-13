@@ -2,27 +2,31 @@
   "name": "react-server-pages",
   "version": "0.0.1",
   "description": "Connect middleware for serving React components from a standard folder structure.",
-  "main": "./lib/index.js",
+  "main": "./lib",
+  "scripts": {
+    "start": "node ./example",
+    "watch": "nodemon ./example",
+    "test": "./node_modules/mocha/bin/mocha --recursive --compilers js:babel/register",
+    "tdd": "./node_modules/mocha/bin/mocha --recursive --compilers js:babel/register --watch",
+    "prepublish": "gulp build"
+  },
   "dependencies": {
+    "chalk": "^1.1.1",
     "express": "^4.13.3",
+    "lodash": "^3.10.1",
     "react": "^0.13.3"
   },
   "devDependencies": {
     "babel": "^5.6.14",
     "babel-core": "^5.6.18",
     "babel-eslint": "^3.1.23",
-    "gulp": "^3.9.0",
-    "gulp-eslint": "^0.15.0",
-    "gulp-babel": "^5.2.0",
+    "chai": "^2.2.0",
     "eslint": "^0.24.1",
+    "gulp": "^3.9.0",
+    "gulp-babel": "^5.2.0",
+    "gulp-eslint": "^0.15.0",
     "mocha": "^2.2.1",
-    "chai": "^2.2.0"
-  },
-  "scripts": {
-    "start": "node .",
-    "test": "./node_modules/mocha/bin/mocha --recursive --compilers js:babel/register",
-    "tdd": "./node_modules/mocha/bin/mocha --recursive --compilers js:babel/register --watch",
-    "prepublish": "gulp build"
+    "supertest": "^1.1.0"
   },
   "repository": {
     "type": "git",

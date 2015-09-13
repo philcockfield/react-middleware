@@ -1,1 +1,1 @@
-console.log("Started [react-server-pages]");
+module.exports = require("./middleware");
