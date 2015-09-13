@@ -17,9 +17,5 @@ export default class Home extends React.Component {
 }
 
 // API -------------------------------------------------------------------------
-Home.propTypes = {
-  env: React.PropTypes.oneOf(["production", "development"]),
-};
-Home.defaultProps = {
-  env: "development"
-};
+Home.propTypes = {};
+Home.defaultProps = {};

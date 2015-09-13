@@ -5,7 +5,8 @@ import fsPath from "path";
 import Url from "url";
 import * as util from "js-util";
 
-const IS_PRODUCTION = process.env.NODE_ENV === "production";
+const NODE_ENV = process.env.NODE_ENV || "development";
+const IS_PRODUCTION = NODE_ENV === "production";
 
 
 
@@ -70,14 +71,13 @@ export default (middleware) => {
 
           // Prepare the page body.
           const pageProps = route.props || {};
-          pageProps.env = pageProps.env ? pageProps.env : process.env.NODE_ENV;
           const pageBody = React.createElement(getPage(route), pageProps);
 
           // Prepare the root <Html> page props.
           const layoutProps = {
             title: route.title,
             body: pageBody,
-            env: process.env.NODE_ENV
+            env: NODE_ENV
           };
 
           // Convert the page-layout into HTML.

@@ -28,6 +28,5 @@ Html.propTypes = {
   env: React.PropTypes.oneOf(["production", "development"]),
 };
 Html.defaultProps = {
-  title: "Untitled",
-  env: "development"
+  title: "Untitled"
 };
