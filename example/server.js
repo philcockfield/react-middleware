@@ -4,8 +4,11 @@ import ReactServerPages from "../src";
 import chalk from "chalk";
 
 
-const middleware = ReactServerPages({ base:"./example" });
+const middleware = ReactServerPages({ base:"./example/site" });
 const app = express().use(middleware);
+
+// Create the folder-structure and base template files.
+middleware.templates.create();
 
 
 const PORT = 8080;

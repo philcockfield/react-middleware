@@ -1,8 +1,8 @@
 import _ from "lodash";
 import express from "express";
-import paths from "./middleware-paths";
 import templates from "./templates";
-
+import paths from "./middleware-paths";
+import router from "./middleware-router";
 
 
 /**
@@ -19,5 +19,6 @@ export default (options = {}) => {
   const middleware = express.Router();
   middleware.paths = paths(options);
   middleware.templates = templates(middleware.paths);
+  router(middleware);
   return middleware;
 };

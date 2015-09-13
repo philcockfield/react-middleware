@@ -11,7 +11,6 @@ const BASE_PATH = "./test/sample-templates";
 describe("templates", function() {
   let middleware;
   beforeEach(() => {
-    // deleteFolder();
     middleware = ReactServerPages({ base: BASE_PATH });
     middleware.paths.create();
   });

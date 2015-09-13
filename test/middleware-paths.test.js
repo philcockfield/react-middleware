@@ -6,6 +6,9 @@ import ReactServerPages from "../src";
 
 
 describe("middleware.paths", function() {
+  afterEach(() => { fs.removeSync(fsPath.resolve("./foo")); });
+
+
   describe("base", function() {
     it("has default", () => {
       const middleware = ReactServerPages();
@@ -19,7 +22,6 @@ describe("middleware.paths", function() {
 
     it("has custom (relative)", () => {
       expect(ReactServerPages({ base: "./foo" }).paths.base).to.equal(fsPath.resolve("./foo"));
-      expect(ReactServerPages({ base: "../foo" }).paths.base).to.equal(fsPath.resolve("../foo"));
     });
   });
 

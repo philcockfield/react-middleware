@@ -19,6 +19,10 @@ class TemplateFile {
     }
     return this;
   }
+  import() {
+    this.copy();
+    return require(this.targetPath);
+  }
 }
 
 
@@ -29,11 +33,14 @@ class TemplateFile {
 export default (paths) => {
   const templates = {
     routes: new TemplateFile("./routes.js", `${ paths.base }/routes.js`),
+    html: new TemplateFile("./Html.jsx", `${ paths.layouts }/Html.jsx`),
+    home: new TemplateFile("./Home.jsx", `${ paths.pages }/Home/Home.jsx`),
 
     /**
      * Creates all template files if they don't already exist.
      */
     create() {
+      paths.create();
       _.forIn(templates, (file) => {
         if (file instanceof TemplateFile) {
           file.copy();
