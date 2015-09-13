@@ -1,7 +1,7 @@
 "use strict"
 import { expect } from "chai";
+import fs from "fs-extra";
 import fsPath from "path";
-// import request from "supertest";
 import express from "express";
 import ReactServerPages from "../src";
 
@@ -53,30 +53,31 @@ describe("middleware.paths", function() {
       expect(paths.pages).to.equal("foo");
     });
   });
+
+
+
+  describe("folder creation", function() {
+    const deleteFolder = () => { fs.removeSync(fsPath.join(__dirname, "/sample")); };
+    beforeEach(() => { deleteFolder(); });
+    afterEach(() => { deleteFolder(); });
+
+    it("does not have folders", () => {
+      const middleware = ReactServerPages({ base:"./test/sample" });
+      expect(middleware.paths.exist).to.equal(false);
+    });
+
+    it("creates folders", () => {
+      const middleware = ReactServerPages({ base:"./test/sample" });
+      middleware.paths.create();
+      expect(middleware.paths.exist).to.equal(true);
+    });
+
+    it("has partial folders", () => {
+      ReactServerPages({ base:"./test/sample" }).paths.create();
+      fs.removeSync(fsPath.join(__dirname, "/sample/views/pages"));
+      const middleware = ReactServerPages({ base:"./test/sample" });
+      expect(middleware.paths.exist).to.equal("partial");
+    });
+
+  });
 });
-
-
-
-// describe("middleware", function() {
-//
-//   const app = express();
-//   app.get('/user', function(req, res){
-//     res.status(200).send({ name: 'tobi' });
-//   });
-//
-//   it("retrieves the user", (done) => {
-//
-//     request(app)
-//       .get("/user")
-//       .set("Accept", "application/json")
-//       .expect("Content-Type", /json/)
-//       .expect(200)
-//       .end((err, res) => {
-//         console.log("res", res);
-//         done();
-//       })
-//
-//   });
-//
-//
-// });
