@@ -18,7 +18,9 @@ app.listen(PORT, () => {
         console.log(" - env: ", process.env.NODE_ENV || "development");
         console.log(" - paths:");
         _.forIn(middleware.paths, (value, key) => {
-          console.log(`     - ${ chalk.magenta(key) }:`, chalk.grey(value));}
+          if (!_.isFunction(value)) {
+            console.log(`     - ${ chalk.magenta(key) }:`, chalk.grey(value));}
+          }
         );
         console.log("");
 });

@@ -2,7 +2,6 @@
 import { expect } from "chai";
 import fs from "fs-extra";
 import fsPath from "path";
-import express from "express";
 import ReactServerPages from "../src";
 
 
@@ -57,7 +56,7 @@ describe("middleware.paths", function() {
 
 
   describe("folder creation", function() {
-    const BASE_PATH = "./test/path-sample";
+    const BASE_PATH = "./test/sample-paths";
     const deleteFolder = () => { fs.removeSync(fsPath.resolve(BASE_PATH)); };
     beforeEach(() => { deleteFolder(); });
     afterEach(() => { deleteFolder(); });
