@@ -1,4 +1,7 @@
 # react-server-pages
+
+[![Build Status](https://travis-ci.org/philcockfield/react-server-pages.svg?branch=master)](https://travis-ci.org/philcockfield/react-server-pages)
+
 Connect middleware for serving React components from a standard folder structure.
 
 ## TODO
