@@ -1,8 +1,9 @@
 import _ from "lodash";
 import express from "express";
-import templates from "./templates";
+import css from "./middleware-css";
 import paths from "./middleware-paths";
 import router from "./middleware-router";
+import templates from "./templates";
 
 
 /**
@@ -20,5 +21,6 @@ export default (options = {}) => {
   middleware.paths = paths(options);
   middleware.templates = templates(middleware.paths);
   router(middleware);
+  css(middleware);
   return middleware;
 };
