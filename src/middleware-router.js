@@ -11,30 +11,30 @@ const IS_PRODUCTION = NODE_ENV === "production";
 
 
 const asValues = (obj, args) => {
-  obj = _.clone(obj, true);
-  _.forIn(obj, (value, key) => {
-        if (_.isFunction(value)) {
-          obj[key] = value(args); // Convert the function into a value.
-        } else if (_.isObject(value)) {
-          asValues(value, args); // <== RECURSION.
-        }
-  });
-  return obj;
+    obj = _.clone(obj, true);
+    _.forIn(obj, (value, key) => {
+          if (_.isFunction(value)) {
+            obj[key] = value(args); // Convert the function into a value.
+          } else if (_.isObject(value)) {
+            asValues(value, args); // <== RECURSION.
+          }
+    });
+    return obj;
 };
 
 
 
 const getFilePath = (basePath, name, extension) => {
-  let path;
-  name = name.charAt(0).toUpperCase() + name.slice(1); // Capitalize the file/folder name.
+    let path;
+    name = name.charAt(0).toUpperCase() + name.slice(1); // Capitalize the file/folder name.
 
-  // Look first for the existence of a stand-alone file.
-  path = fsPath.join(basePath, `${ name }.${ extension }`);
-  if (fs.existsSync(path)) { return path; }
+    // Look first for the existence of a stand-alone file.
+    path = fsPath.join(basePath, `${ name }.${ extension }`);
+    if (fs.existsSync(path)) { return path; }
 
-  // Look for the file within a folder.
-  path = fsPath.join(basePath, name, `${ name }.${ extension }`);
-  if (fs.existsSync(path)) { return path; }
+    // Look for the file within a folder.
+    path = fsPath.join(basePath, name, `${ name }.${ extension }`);
+    if (fs.existsSync(path)) { return path; }
 };
 
 
@@ -87,7 +87,8 @@ export default (middleware) => {
   };
 
   // Regsiter each route as a GET handler.
-  _.forIn(templates.routes.import(), (route, pattern) => {
+  const routes = templates.routes.import();
+  _.forIn(routes, (route, pattern) => {
       route.pattern = pattern;
       middleware.get(pattern, (req, res) => { render(req, res, route); });
   });

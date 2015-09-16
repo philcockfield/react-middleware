@@ -4,7 +4,7 @@ const IS_DEVELOPMENT = process.env.NODE_ENV !== "production";
 
 
 export default (middleware) => {
-  const paths = middleware.paths;
+  const { paths, templates } = middleware;
   const options = {
     watch: IS_DEVELOPMENT,
     minify: true
