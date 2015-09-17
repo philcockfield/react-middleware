@@ -11,12 +11,12 @@ Connect middleware for serving React components from a standard folder structure
 
 
 ## CSS
-This module works on the philosophy that styles, if not within a components itself, should be as damn close to the corresponding component as possible.
+The module works on the philosophy that styles, if not within the HTML component itself, should be as damn close to the corresponding component as possible.  CSS and layup are two sides of the same coin - they are not seperate concerns.
 
-Situate **.styl** or **.css** files next to the Page.jsx or Component.jsx and the server will automatically find and compile it into production-ready CSS.
+Situate **.styl** or **.css** files next to your Page.jsx or Component.jsx and the server will automatically find and compile it into production-ready CSS.
 
 #### Global CSS
-Place global CSS, such as resets and common page/class styles, within the folder:
+In the cases where you need global CSS, such as resets and common page/class styles, place these within the folder:
 
     /base
       |-- /css # Global CSS.
@@ -24,21 +24,42 @@ Place global CSS, such as resets and common page/class styles, within the folder
 This folder is automatically populated with the [normalize.css](https://necolas.github.io/normalize.css/) reset file.
 
 #### Referencing CSS
-The special `/css` route serves compiled CSS:
-
-    /css                # The contents of the /css folder.
-    /css?page=:name     # The global CSS and the given page names (comma seperated).
-    /css/page/:name     # All CSS within the current page's folder.
-    /css/components     # All CSS within the /components folder.
-
-For example:
+To bring CSS into the served page use the `/css` route, for example:
 
 ```html
 <head>
+  <!--
+    The "/css" path combines all CSS across
+        - global
+        - layouts
+        - pages
+        - components
+  -->
   <link href="/css" rel="stylesheet"/>
-  <link href="/css/page" rel="stylesheet"/>
 </head>
 ```    
+
+To selectively bring in a subset of site's CSS pass a query-string:
+
+- `?global` - includes the CSS within the `<base>/css` folder.
+- Layouts
+    - `?layouts` - includes all CSS within the `/views/layouts` folder.
+    - `?layout=<Name>` - includes only the named layout or comma-seperated list of layout names.
+- Pages
+    - `?pages` - includes all CSS within the `/views/pages` folder.
+    - `?page=<Name>` - includes only the named page or comma-seperated list of page names.
+- Components
+    - `?components` - includes all CSS within the `/views/components` folder.
+    - `?component=<Name>` - includes only the named component or comma-seperated list of component names.
+
+
+For example:
+```html
+<head>
+  <link href="/css?global&components&page=Features" rel="stylesheet"/>
+</head>
+```    
+
 
 
 
