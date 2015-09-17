@@ -4,6 +4,9 @@ import ReactServerPages from "../src";
 import chalk from "chalk";
 
 
+// ReactServerPages.start({ base:"./example/site" });
+
+
 const middleware = ReactServerPages({ base:"./example/site" });
 const app = express().use(middleware);
 
