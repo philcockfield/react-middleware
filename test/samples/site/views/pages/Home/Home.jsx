@@ -1,9 +1,5 @@
 import React from "react";
 
-
-/**
- * The main home page.
- */
 export default class Home extends React.Component {
   render() {
     return (
@@ -15,7 +11,3 @@ export default class Home extends React.Component {
     );
   }
 }
-
-// API -------------------------------------------------------------------------
-Home.propTypes = {};
-Home.defaultProps = {};

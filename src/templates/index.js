@@ -17,7 +17,8 @@ export default (paths) => {
 
   const templates = {
     routes: template("routes.js", paths.base),
-    html: template("Html.jsx", paths.layouts),
+    html: template("Html.jsx", `${ paths.layouts }/Html`),
+    htmlCss: template("Html.styl", `${ paths.layouts }/Html`),
     home: template("Home.jsx", `${ paths.pages }/Home`),
     homeCss: template("Home.styl", `${ paths.pages }/Home`),
     normalize: template("normalize.css", paths.css),
@@ -28,9 +29,9 @@ export default (paths) => {
     create() {
       paths.create();
       _.forIn(templates, (file) => {
-        if (file instanceof TemplateFile) {
-          file.copy();
-        }
+          if (file instanceof TemplateFile) {
+            file.copy();
+          }
       });
     }
   };

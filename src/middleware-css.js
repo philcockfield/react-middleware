@@ -30,8 +30,10 @@ export default (middleware) => {
   const render = (req, res, sourcePaths = []) => {
         // Prep the source paths.
         if (!_.isArray(sourcePaths)) { sourcePaths = [sourcePaths]; }
-        // sourcePaths = ([ cssResetPath, paths.css, sourcePaths ]);
         sourcePaths = _.flatten(sourcePaths);
+        if (sourcePaths.length === 0) {
+          return res.status(404).send({ message: `No CSS paths to load` })
+        }
 
         // Compile the CSS (or retrieve from cache).
         fsCss.compile(sourcePaths, COMPILER_OPTIONS)
@@ -48,13 +50,40 @@ export default (middleware) => {
 
   // Listen to GET requests for CSS.
   middleware.get("/css", (req, res) => {
-    let sourcePaths = [
-      cssResetPath,
-      paths.css,
-      paths.components,
-      paths.pages
-    ];
-    render(req, res, sourcePaths);
+      const toPaths = (base, value) => {
+        return _.chain(value)
+                .split(",")
+                .map(folder => `${ base }/${ _.trim(folder) }`)
+                .value();
+      };
+
+      const toPath = (key, value) => {
+          const path = paths[key];
+          switch (key) {
+            case "global": return [ cssResetPath, paths.css ];
+
+            case "layouts": return paths.layouts;
+            case "layout": return toPaths(paths.layouts, value);
+
+            case "pages": return paths.pages;
+            case "page": return toPaths(paths.pages, value);
+
+            case "components": return paths.components;
+            case "component": return toPaths(paths.components, value);
+          }
+      };
+
+      let query = _.clone(req.query);
+      query = !_.isEmpty(query)
+          ? query
+          : { global: true, pages: true, components: true, layouts: true };
+      const sourcePaths = _.chain(query)
+          .keys()
+          .map(key => toPath(key, query[key]))
+          .flatten(true)
+          .compact()
+          .value();
+
+      render(req, res, sourcePaths);
   });
-  // middleware.get("/css/page/:page", (req, res) => render(req, res, `${ paths.pages }/${ req.params.page }`));
 };
