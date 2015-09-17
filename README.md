@@ -27,7 +27,8 @@ This folder is automatically populated with the [normalize.css](https://necolas.
 The special `/css` route serves compiled CSS:
 
     /css                # The contents of the /css folder.
-    /css/page           # All CSS within the current page's folder.
+    /css?page=:name     # The global CSS and the given page names (comma seperated).
+    /css/page/:name     # All CSS within the current page's folder.
     /css/components     # All CSS within the /components folder.
 
 For example:

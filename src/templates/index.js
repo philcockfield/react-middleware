@@ -19,6 +19,7 @@ export default (paths) => {
     routes: template("routes.js", paths.base),
     html: template("Html.jsx", paths.layouts),
     home: template("Home.jsx", `${ paths.pages }/Home`),
+    homeCss: template("Home.styl", `${ paths.pages }/Home`),
     normalize: template("normalize.css", paths.css),
 
     /**
