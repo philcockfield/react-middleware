@@ -66,7 +66,7 @@ export default (middleware) => {
             pattern: route.pattern,
             params: params
           };
-          const args = { url: url, pattern: route.pattern };
+          const args = { url: url };
           route = asValues(route, args);
 
           // Prepare the page body.
@@ -77,7 +77,8 @@ export default (middleware) => {
           const layoutProps = {
             title: route.title,
             body: pageBody,
-            env: NODE_ENV
+            env: NODE_ENV,
+            page: { name: route.page }
           };
 
           // Convert the page-layout into HTML.

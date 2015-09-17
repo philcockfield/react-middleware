@@ -26,6 +26,9 @@ Html.propTypes = {
   title: React.PropTypes.string,
   body: React.PropTypes.node,
   env: React.PropTypes.oneOf(["production", "development"]),
+  page: React.PropTypes.shape({
+    name: React.PropTypes.string.isRequired,
+  }).isRequired
 };
 Html.defaultProps = {
   title: "Untitled"

@@ -5,7 +5,7 @@
   "main": "./lib",
   "scripts": {
     "start": "node ./example",
-    "watch": "nodemon ./example",
+    "watch": "nodemon ./example -e js,jsx",
     "test": "./node_modules/mocha/bin/mocha --recursive --compilers js:babel/register",
     "tdd": "./node_modules/mocha/bin/mocha --recursive --compilers js:babel/register --watch",
     "prepublish": "gulp build"
