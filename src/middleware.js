@@ -1,5 +1,6 @@
 import _ from "lodash";
 import express from "express";
+import fsCss from "fs-css";
 import css from "./middleware-css";
 import middlewarePaths from "./middleware-paths";
 import middlewareRouter from "./middleware-router";
@@ -28,33 +29,45 @@ const api = (options = {}) => {
 };
 
 
-/**
- * Starts a web server.
- * @param {options}
- *            - port: The port to run on (default 80:production | 8080:development).
- *            - name: The display name of the server (emitted to the console).
- *            - <see main middlware options>
- */
-api.start = (options = {}) => {
+
+const start = (middlware, options = {}) => {
   const PORT = options.port || IS_PRODUCTION ? 80 : 8080;
   const NAME = options.name || "Server"
-
-  // Create the server.
-  const app = express();
-  app.use(api(options));
-
-  // Start the server.
-  app.listen(PORT, () => {
-          const HR = _.repeat("-", 80)
-          console.log("\n");
-          console.log(`${ NAME }:`);
-          console.log(HR);
-          console.log(" - port:", PORT);
-          console.log(" - env: ", process.env.NODE_ENV || "development");
-          console.log("");
-  });
+  const SILENT = options.silent === undefined ? false : options.silent;
+  express()
+    .use(middlware)
+    .listen(PORT, () => {
+          if (!SILENT) {
+            const HR = _.repeat("-", 80)
+            console.log("\n");
+            console.log(`${ NAME }:`);
+            console.log(HR);
+            console.log(" - port:", PORT);
+            console.log(" - env: ", process.env.NODE_ENV || "development");
+            console.log("");
+          }
+    });
 };
 
 
+/**
+ * Starts a web server.
+ * @param {options}
+ *            - port:   The port to run on (default 80:production | 8080:development).
+ *            - name:   The display name of the server (emitted to the console).
+ *            - silent: Flag indicating if startup output should be suppressed.
 
+ *            - <see main middlware options>
+ */
+api.start = (options = {}) => start(api(options), options);
+
+
+/**
+ * Clears all cached content.
+ */
+api.clearCache = () => {
+  fsCss.clearCache();
+};
+
+// ----------------------------------------------------------------------------
 export default api;

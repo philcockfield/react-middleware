@@ -28,12 +28,12 @@ export default (middleware) => {
 
 
   const render = (req, res, sourcePaths = []) => {
+        // Prep the source paths.
         if (!_.isArray(sourcePaths)) { sourcePaths = [sourcePaths]; }
-        // sourcePaths.push([ cssResetPath, paths.css ]);
-        sourcePaths = ([ cssResetPath, paths.css, sourcePaths ]);
+        // sourcePaths = ([ cssResetPath, paths.css, sourcePaths ]);
+        sourcePaths = _.flatten(sourcePaths);
 
         // Compile the CSS (or retrieve from cache).
-        sourcePaths = _.flatten(sourcePaths);
         fsCss.compile(sourcePaths, COMPILER_OPTIONS)
         .then(result => {
               res.set("Content-Type", "text/css");
@@ -47,6 +47,14 @@ export default (middleware) => {
   };
 
   // Listen to GET requests for CSS.
-  middleware.get("/css", (req, res) => render(req, res));
-  middleware.get("/css/page/:page", (req, res) => render(req, res, `${ paths.pages }/${ req.params.page }`));
+  middleware.get("/css", (req, res) => {
+    let sourcePaths = [
+      cssResetPath,
+      paths.css,
+      paths.components,
+      paths.pages
+    ];
+    render(req, res, sourcePaths);
+  });
+  // middleware.get("/css/page/:page", (req, res) => render(req, res, `${ paths.pages }/${ req.params.page }`));
 };
