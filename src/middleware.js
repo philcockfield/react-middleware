@@ -25,12 +25,19 @@ const IS_PRODUCTION = process.env.NODE_ENV === "production";
  *                          True by default when not in "production".
  */
 const api = (options = {}) => {
-  const router = express.Router();
-  router.paths = middlewarePaths(options);
-  router.templates = templates(router.paths);
-  middlewareRouter(router);
-  middlewareCss(router, options.css);
-  return router;
+  // Prepare the middleware.
+  const middleware = express.Router();
+  middleware.paths = middlewarePaths(options);
+  middleware.templates = templates(middleware.paths);
+  middlewareRouter(middleware);
+  middlewareCss(middleware, options.css);
+
+  // Decorate with functions.
+  middleware.start = (options) => start(middleware, options);
+  middleware.clearCache = () => api.clearCache();
+
+  // Finish up.
+  return middleware;
 };
 
 
@@ -52,6 +59,7 @@ const start = (middlware, options = {}) => {
             console.log("");
           }
     });
+  return middlware;
 };
 
 

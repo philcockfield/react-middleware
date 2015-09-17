@@ -11,7 +11,7 @@ export default class Html extends React.Component {
         <head>
           <title>{ this.props.title }</title>
           <meta charSet="utf-8"/>
-          <link href="/css" rel="stylesheet"/>
+          <link href="/css/common" rel="stylesheet"/>
         </head>
         <body>
           <div id="root">{ this.props.body }</div>

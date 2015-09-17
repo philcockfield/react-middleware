@@ -15,7 +15,3 @@ export default class Home extends React.Component {
     );
   }
 }
-
-// API -------------------------------------------------------------------------
-Home.propTypes = {};
-Home.defaultProps = {};

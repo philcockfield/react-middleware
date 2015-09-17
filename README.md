@@ -59,6 +59,22 @@ For example:
 </head>
 ```    
 
+Some common CSS paths are provided:
+
+```html
+<link href="/css/common" /><!-- Global, layouts, components -->
+<link href="/css/global" /><!-- Global css. -->
+
+<link href="/css/layouts" /><!-- All layouts -->
+<link href="/css/layout/:Name1,:Name2" /><!-- The specified layout or comma-seperated list of layouts -->
+
+<link href="/css/pages" /><!-- All pages -->
+<link href="/css/page/:Name1,:Name2" /><!-- The specified page or comma-seperated list of pages -->
+
+<link href="/css/components" /><!-- All components -->
+<link href="/css/component/:Name1,:Name2" /><!-- The specified page or comma-seperated list of pages -->
+```
+
 
 
 
