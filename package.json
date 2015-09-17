@@ -1,6 +1,6 @@
 {
   "name": "react-server-pages",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Connect middleware for serving React components from a standard folder structure.",
   "main": "./lib",
   "scripts": {
