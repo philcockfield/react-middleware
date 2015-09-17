@@ -4,6 +4,9 @@ import ReactServerPages from "../src";
 import chalk from "chalk";
 
 
+// ReactServerPages.start({ base:"./example/site" });
+
+
 const middleware = ReactServerPages({ base:"./example/site" });
 const app = express().use(middleware);
 
@@ -21,7 +24,7 @@ app.listen(PORT, () => {
         console.log(" - env: ", process.env.NODE_ENV || "development");
         console.log(" - paths:");
         _.forIn(middleware.paths, (value, key) => {
-          if (!_.isFunction(value)) {
+          if (_.isString(value)) {
             console.log(`     - ${ chalk.magenta(key) }:`, chalk.grey(value));}
           }
         );

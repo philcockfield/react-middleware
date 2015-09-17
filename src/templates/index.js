@@ -1,29 +1,7 @@
 import _ from "lodash";
-import fs from "fs-extra";
-import fsPath from "path";
+import TemplateFile from "../template-file";
 
 
-
-/**
- * Represents a template file.
- */
-class TemplateFile {
-  constructor(sourcePath, targetPath) {
-    this.sourcePath = fsPath.join(__dirname, sourcePath);
-    this.targetPath = targetPath;
-  }
-  exists() { return fs.existsSync(this.targetPath); }
-  copy() {
-    if (!this.exists()) {
-      fs.copySync(this.sourcePath, this.targetPath);
-    }
-    return this;
-  }
-  import() {
-    this.copy();
-    return require(this.targetPath);
-  }
-}
 
 
 /**
@@ -31,11 +9,18 @@ class TemplateFile {
  * @param paths: The middleware folder paths object.
  */
 export default (paths) => {
+  const template = (fileName, targetFolder) => {
+      const sourcePath = `./${ fileName }`;
+      const targetPath = `${ targetFolder }/${ fileName }`;
+      return new TemplateFile(sourcePath, targetPath);
+  };
+
   const templates = {
-    routes: new TemplateFile("./routes.js", `${ paths.base }/routes.js`),
-    html: new TemplateFile("./Html.jsx", `${ paths.layouts }/Html.jsx`),
-    home: new TemplateFile("./Home.jsx", `${ paths.pages }/Home/Home.jsx`),
-    normalize: new TemplateFile("./normalize.css", `${ paths.css }/normalize.css`),
+    routes: template("routes.js", paths.base),
+    html: template("Html.jsx", paths.layouts),
+    home: template("Home.jsx", `${ paths.pages }/Home`),
+    homeCss: template("Home.styl", `${ paths.pages }/Home`),
+    normalize: template("normalize.css", paths.css),
 
     /**
      * Creates all template files if they don't already exist.

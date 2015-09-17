@@ -1,6 +1,6 @@
 {
   "name": "react-server-pages",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Connect middleware for serving React components from a standard folder structure.",
   "main": "./lib",
   "scripts": {
@@ -13,7 +13,7 @@
   "dependencies": {
     "chalk": "^1.1.1",
     "express": "^4.13.3",
-    "fs-css": "^1.0.0",
+    "fs-css": "^1.0.8",
     "fs-extra": "^0.24.0",
     "js-util": "^1.0.5",
     "lodash": "^3.10.1",

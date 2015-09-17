@@ -6,12 +6,12 @@ import React from "react";
  */
 export default class Html extends React.Component {
   render() {
-    console.log("Layout props", this.props); // TEMP
     return (
       <html>
         <head>
           <title>{ this.props.title }</title>
           <meta charSet="utf-8"/>
+          <link href="/css" rel="stylesheet"/>
         </head>
         <body>
           <div id="root">{ this.props.body }</div>
