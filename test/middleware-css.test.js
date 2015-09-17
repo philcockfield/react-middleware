@@ -1,14 +1,15 @@
 "use strict"
 import { expect } from "chai";
 import express from "express";
-import ServerPages from "../src";
 import request from "supertest";
+import ServerPages from "../src";
 
 const BASE_PATH = "./test/samples/site";
 
 
 describe("middleware-css", function() {
   beforeEach(() => ServerPages.clearCache());
+  afterEach(() => ServerPages.clearCache());
 
   it("retrieves all the CSS", (done) => {
     const app = express();

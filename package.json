@@ -29,6 +29,7 @@
     "gulp-babel": "^5.2.0",
     "gulp-eslint": "^0.15.0",
     "mocha": "^2.2.1",
+    "sinon": "^1.16.1",
     "supertest": "^1.1.0"
   },
   "repository": {

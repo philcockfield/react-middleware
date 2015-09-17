@@ -1,7 +1,7 @@
 import _ from "lodash";
 import express from "express";
 import fsCss from "fs-css";
-import css from "./middleware-css";
+import middlewareCss from "./middleware-css";
 import middlewarePaths from "./middleware-paths";
 import middlewareRouter from "./middleware-router";
 import templates from "./templates";
@@ -18,13 +18,18 @@ const IS_PRODUCTION = process.env.NODE_ENV === "production";
  *            - layouts:    The relative or absolute path to the page layouts folder.
  *            - components: The relative or absolute path to the shared components folder.
  *            - pages:      The relative or absolute path to the pages folder.
+ *            - css:
+ *                - minify: Flag indicating if compiled CSS should be compressed.
+ *                          True by default when in "production".
+ *                - watch:  Flag indicating if changes to CSS files should invalidate the cache.
+ *                          True by default when not in "production".
  */
 const api = (options = {}) => {
   const router = express.Router();
   router.paths = middlewarePaths(options);
   router.templates = templates(router.paths);
   middlewareRouter(router);
-  css(router);
+  middlewareCss(router, options.css);
   return router;
 };
 
