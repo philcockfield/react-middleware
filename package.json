@@ -13,7 +13,7 @@
   "dependencies": {
     "chalk": "^1.1.1",
     "express": "^4.13.3",
-    "fs-css": "^1.0.8",
+    "fs-css": "^1.0.10",
     "fs-extra": "^0.24.0",
     "js-util": "^1.0.5",
     "lodash": "^3.10.1",
