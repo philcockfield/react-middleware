@@ -12,34 +12,36 @@ describe("css", function() {
   afterEach(() => ServerPages.clearCache());
 
 
-  it("retrieves all the CSS", (done) => {
-    const app = express();
-    app.use(ServerPages({ base:BASE_PATH }));
+  const render = (path, callback) => {
+    const app =
+      express()
+      .use(ServerPages({ base:BASE_PATH }));
     request(app)
-      .get("/css")
+      .get(path)
       .expect(200)
       .expect("Content-Type", "text/css; charset=utf-8")
-      .end((err, res) => {
-          expect(res.text).to.include("git.io/normalize");
-          expect(res.text).to.include(".global {");
-          expect(res.text).to.include("border: solid MIXIN_VALUE");
-          expect(res.text).to.include(".Home {");
-          expect(res.text).to.include(".MyComponent {");
+      .end((err, res) => callback(err, res.text));
+  };
+
+
+  it("retrieves all the CSS", (done) => {
+    render("/css", (err, text) => {
+          expect(text).to.include("git.io/normalize");
+          expect(text).to.include(".global {");
+          expect(text).to.include("border: solid MIXIN_VALUE");
+          expect(text).to.include(".Home {");
+          expect(text).to.include(".MyComponent {");
           if (err) { return done(err); }
           done();
-      });
+    });
   });
 
   it("returns global CSS only", (done) => {
-    const app = express();
-    app.use(ServerPages({ base:BASE_PATH }));
-    request(app)
-      .get("/css?global")
-      .end((err, res) => {
-          expect(res.text).to.include("git.io/normalize");
-          expect(res.text).to.include(".global {");
-          expect(res.text).not.to.include(".Home {");
-          expect(res.text).not.to.include(".MyComponent {");
+    render("/css?global", (err, text) => {
+          expect(text).to.include("git.io/normalize");
+          expect(text).to.include(".global {");
+          expect(text).not.to.include(".Home {");
+          expect(text).not.to.include(".MyComponent {");
           if (err) { return done(err); }
           done();
     });
@@ -47,44 +49,32 @@ describe("css", function() {
 
   describe("pages", function() {
     it("returns CSS for a single page", (done) => {
-      const app = express();
-      app.use(ServerPages({ base:BASE_PATH }));
-      request(app)
-        .get("/css?page=Features")
-        .end((err, res) => {
-            expect(res.text).not.to.include("git.io/normalize");
-            expect(res.text).not.to.include(".global {");
-            expect(res.text).not.to.include(".Home {");
-            expect(res.text).not.to.include(".MyComponent {");
-            expect(res.text).to.include(".Features {");
-            if (err) { return done(err); }
-            done();
+      render("/css?page=Features", (err, text) => {
+              expect(text).not.to.include("git.io/normalize");
+              expect(text).not.to.include(".global {");
+              expect(text).not.to.include(".Home {");
+              expect(text).not.to.include(".MyComponent {");
+              expect(text).to.include(".Features {");
+              if (err) { return done(err); }
+              done();
       });
     });
 
     it("returns CSS for several specific pages", (done) => {
-      const app = express();
-      app.use(ServerPages({ base:BASE_PATH }));
-      request(app)
-        .get("/css?page=Home, Features")
-        .end((err, res) => {
-            expect(res.text).to.include(".Features {");
-            expect(res.text).to.include(".Home {");
-            expect(res.text).not.to.include(".Pricing {");
+      render("/css?page=Home, Features", (err, text) => {
+            expect(text).to.include(".Features {");
+            expect(text).to.include(".Home {");
+            expect(text).not.to.include(".Pricing {");
             if (err) { return done(err); }
             done();
       });
     });
 
     it("returns CSS for all pages", (done) => {
-      const app = express();
-      app.use(ServerPages({ base:BASE_PATH }));
-      request(app)
-        .get("/css?pages")
-        .end((err, res) => {
-            expect(res.text).to.include(".Features {");
-            expect(res.text).to.include(".Home {");
-            expect(res.text).to.include(".Pricing {");
+      render("/css?pages", (err, text) => {
+            expect(text).to.include(".Features {");
+            expect(text).to.include(".Home {");
+            expect(text).to.include(".Pricing {");
             if (err) { return done(err); }
             done();
       });
@@ -94,26 +84,18 @@ describe("css", function() {
 
   describe("components", function() {
     it("returns CSS for a single component", (done) => {
-      const app = express();
-      app.use(ServerPages({ base:BASE_PATH }));
-      request(app)
-        .get("/css?component=MyComponent")
-        .end((err, res) => {
-            expect(res.text).to.include(".MyComponent {");
-            expect(res.text).not.to.include(".Spinner {");
+      render("/css?component=MyComponent", (err, text) => {
+            expect(text).to.include(".MyComponent {");
+            expect(text).not.to.include(".Spinner {");
             if (err) { return done(err); }
             done();
       });
     });
 
     it("returns CSS for all components", (done) => {
-      const app = express();
-      app.use(ServerPages({ base:BASE_PATH }));
-      request(app)
-        .get("/css?components")
-        .end((err, res) => {
-            expect(res.text).to.include(".MyComponent {");
-            expect(res.text).to.include(".Spinner {");
+      render("/css?components", (err, text) => {
+            expect(text).to.include(".MyComponent {");
+            expect(text).to.include(".Spinner {");
             if (err) { return done(err); }
             done();
       });
@@ -122,26 +104,18 @@ describe("css", function() {
 
   describe("layouts", function() {
     it("returns CSS for a single layout", (done) => {
-      const app = express();
-      app.use(ServerPages({ base:BASE_PATH }));
-      request(app)
-        .get("/css?layout=Mobile")
-        .end((err, res) => {
-            expect(res.text).to.include("body.mobile {");
-            expect(res.text).not.to.include("body.desktop {");
+      render("/css?layout=Mobile", (err, text) => {
+            expect(text).to.include("body.mobile {");
+            expect(text).not.to.include("body.desktop {");
             if (err) { return done(err); }
             done();
       });
     });
 
     it("returns CSS for all layouts", (done) => {
-      const app = express();
-      app.use(ServerPages({ base:BASE_PATH }));
-      request(app)
-        .get("/css?layouts")
-        .end((err, res) => {
-            expect(res.text).to.include("body.mobile {");
-            expect(res.text).to.include("body.desktop {");
+      render("/css?layouts", (err, text) => {
+            expect(text).to.include("body.mobile {");
+            expect(text).to.include("body.desktop {");
             if (err) { return done(err); }
             done();
       });
