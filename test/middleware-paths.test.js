@@ -5,31 +5,33 @@ import fsPath from "path";
 import ServerPages from "../src";
 
 
+
 describe("middleware.paths", function() {
-  const deleteFooFolder = () => { fs.removeSync(fsPath.resolve("./foo")); };
-  afterEach(() => { deleteFooFolder(); });
+  const deleteFolders = () => {
+    fs.removeSync(fsPath.resolve("./test/samples/base"));
+    fs.removeSync(fsPath.resolve("./test/samples/custom"));
+    fs.removeSync(fsPath.resolve("./test/sample-paths"));
+  };
+  beforeEach(() => deleteFolders());
+  afterEach(() => deleteFolders());
 
 
   describe("base", function() {
-    it("has default", () => {
-      const middleware = ServerPages();
-      expect(middleware.paths.base).to.equal(fsPath.resolve("./"));
-    });
-
     it("has custom (absolute)", () => {
-      const path = fsPath.resolve("./foo");
+      const path = fsPath.resolve("./test/samples/base");
       const middleware = ServerPages({ base: path });
       expect(middleware.paths.base).to.equal(path);
     });
 
     it("has custom (relative)", () => {
-      expect(ServerPages({ base: "./foo" }).paths.base).to.equal(fsPath.resolve("./foo"));
+      const path = "./test/samples/base"
+      expect(ServerPages({ base: path }).paths.base).to.equal(fsPath.resolve(path));
     });
   });
 
   describe("project structure", function() {
     it("has default paths", () => {
-      const middleware = ServerPages();
+      const middleware = ServerPages({ base: "./test/samples/site" });
       const paths = middleware.paths;
       expect(paths.css).to.equal(`${ paths.base }/css`);
       expect(paths.public).to.equal(`${ paths.base }/public`);
@@ -39,7 +41,7 @@ describe("middleware.paths", function() {
     });
 
     it("has custom paths", () => {
-      const path = fsPath.resolve("./foo");
+      const path = fsPath.resolve("./test/samples/custom");
       const middleware = ServerPages({
         base: path,
         css: path,
@@ -62,9 +64,6 @@ describe("middleware.paths", function() {
 
   describe("folder creation", function() {
     const BASE_PATH = "./test/sample-paths";
-    const deleteFolder = () => { fs.removeSync(fsPath.resolve(BASE_PATH)); };
-    beforeEach(() => { deleteFolder(); });
-    afterEach(() => { deleteFolder(); });
 
     it("does not have folders", () => {
       const middleware = ServerPages({ base: BASE_PATH });

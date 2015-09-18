@@ -5,7 +5,7 @@ import fs from "fs-extra";
 import fsPath from "path";
 import ServerPages from "../src";
 
-const BASE_PATH = "./test/sample-templates";
+const BASE_PATH = "./test/samples/sample-templates";
 
 
 describe("templates", function() {
