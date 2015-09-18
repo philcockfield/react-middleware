@@ -1,11 +1,11 @@
 "use strict"
 import { expect } from "chai";
-import { getOptions } from "../src/middleware-css";
+import { getOptions } from "../src/css";
 
 const NODE_ENV = process.env.NODE_ENV
 
 
-describe("middleware-css (options)", function() {
+describe("css (options)", function() {
   afterEach(() => {
     process.env.NODE_ENV = NODE_ENV; // Reset the environment.
   });

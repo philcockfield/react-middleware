@@ -1,9 +1,9 @@
 import _ from "lodash";
 import express from "express";
 import fsCss from "fs-css";
-import middlewareCss from "./middleware-css";
-import middlewarePaths from "./middleware-paths";
-import middlewareRouter from "./middleware-router";
+import middlewareCss from "./css";
+import middlewarePaths from "./paths";
+import middlewareHtml from "./html";
 import templates from "./templates";
 
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
@@ -29,7 +29,7 @@ const api = (options = {}) => {
   const middleware = express.Router();
   middleware.paths = middlewarePaths(options);
   middleware.templates = templates(middleware.paths);
-  middlewareRouter(middleware);
+  middlewareHtml(middleware);
   middlewareCss(middleware, options.css);
 
   // Decorate with functions.

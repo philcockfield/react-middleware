@@ -6,7 +6,7 @@ import fsPath from "path";
 /**
  * Represents a template file.
  */
-export default class TemplateFile {
+export default class Template {
   constructor(sourcePath, targetPath) {
     this.sourcePath = fsPath.join(__dirname, "./templates", sourcePath);
     this.targetPath = targetPath;

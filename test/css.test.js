@@ -7,7 +7,7 @@ import ServerPages from "../src";
 const BASE_PATH = "./test/samples/site";
 
 
-describe("middleware-css", function() {
+describe("css", function() {
   beforeEach(() => ServerPages.clearCache());
   afterEach(() => ServerPages.clearCache());
 
