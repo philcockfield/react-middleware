@@ -11,6 +11,7 @@ describe("middleware-css", function() {
   beforeEach(() => ServerPages.clearCache());
   afterEach(() => ServerPages.clearCache());
 
+
   it("retrieves all the CSS", (done) => {
     const app = express();
     app.use(ServerPages({ base:BASE_PATH }));

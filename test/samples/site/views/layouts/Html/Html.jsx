@@ -7,7 +7,7 @@ import React from "react";
 export default class Html extends React.Component {
   render() {
     return (
-      <html>
+      <html data-layout="html">
         <head>
           <title>{ this.props.title }</title>
           <meta charSet="utf-8"/>

@@ -4,7 +4,7 @@ import React from "react";
 export default class Mobile extends React.Component {
   render() {
     return (
-      <html>
+      <html data-layout="mobile">
         <head>
           <title>{ this.props.title }</title>
           <meta charSet="utf-8"/>

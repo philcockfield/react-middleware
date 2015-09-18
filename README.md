@@ -7,6 +7,7 @@ Connect middleware for serving React components from a standard folder structure
 - [ ] js (common scrip)
 - [ ] webpack react
 - [ ] caching
+- [ ] gzip - compressions
 
 
 ## CSS
