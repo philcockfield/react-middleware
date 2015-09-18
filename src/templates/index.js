@@ -9,19 +9,21 @@ import Template from "../template";
  * @param paths: The middleware folder paths object.
  */
 export default (paths) => {
-  const template = (fileName, targetFolder) => {
-      const sourcePath = `./${ fileName }`;
-      const targetPath = `${ targetFolder }/${ fileName }`;
+  const template = (sourceDir, sourceFile, targetFolder) => {
+      sourceDir = _.isString(sourceDir) ? sourceDir + "/" : "";
+      const sourcePath = `./${ sourceDir }${ sourceFile }`;
+      const targetPath = `${ targetFolder }/${ sourceFile }`;
       return new Template(sourcePath, targetPath);
   };
 
   const templates = {
-    routes: template("routes.js", paths.base),
-    html: template("Html/Html.jsx", `${ paths.layouts }/Html`),
-    htmlCss: template("Html/Html.styl", `${ paths.layouts }/Html`),
-    home: template("Home/Home.jsx", `${ paths.pages }/Home`),
-    homeCss: template("Home/Home.styl", `${ paths.pages }/Home`),
-    normalize: template("normalize.css", paths.css),
+    routes: template(null, "routes.js", paths.base),
+    html: template(null, "Html/Html.jsx", `${ paths.layouts }/Html`),
+    htmlCss: template(null, "Html/Html.styl", `${ paths.layouts }/Html`),
+    home: template(null, "Home/Home.jsx", `${ paths.pages }/Home`),
+    homeCss: template(null, "Home/Home.styl", `${ paths.pages }/Home`),
+    normalizeCss: template("css", "normalize.css", paths.css),
+    jsIndex: template("js", "index.js", paths.js),
 
     /**
      * Creates all template files if they don't already exist.

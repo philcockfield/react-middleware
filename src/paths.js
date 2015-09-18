@@ -52,6 +52,7 @@ export default (options = {}) => {
     layouts: folder("layouts", "/views/layouts"),
     components: folder("components", "/views/components"),
     pages: folder("pages", "/views/pages"),
+    js: folder("js", "/views/js"),
     create() { createFolders(paths); }
   };
   paths.exist = pathsExist(paths);

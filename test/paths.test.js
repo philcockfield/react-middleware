@@ -38,6 +38,7 @@ describe("middleware.paths", function() {
       expect(paths.layouts).to.equal(`${ paths.base }/views/layouts`);
       expect(paths.components).to.equal(`${ paths.base }/views/components`);
       expect(paths.pages).to.equal(`${ paths.base }/views/pages`);
+      expect(paths.js).to.equal(`${ paths.base }/views/js`);
     });
 
     it("has custom paths", () => {
@@ -48,7 +49,8 @@ describe("middleware.paths", function() {
         public: path,
         layouts: path,
         components: path,
-        pages: path
+        pages: path,
+        js: path
       });
       const paths = middleware.paths;
       expect(paths.base).to.equal(path);
@@ -57,6 +59,7 @@ describe("middleware.paths", function() {
       expect(paths.layouts).to.equal(path);
       expect(paths.components).to.equal(path);
       expect(paths.pages).to.equal(path);
+      expect(paths.js).to.equal(path);
     });
   });
 
