@@ -18,10 +18,10 @@ export default (paths) => {
 
   const templates = {
     routes: template(null, "routes.js", paths.base),
-    html: template(null, "Html/Html.jsx", `${ paths.layouts }/Html`),
-    htmlCss: template(null, "Html/Html.styl", `${ paths.layouts }/Html`),
-    home: template(null, "Home/Home.jsx", `${ paths.pages }/Home`),
-    homeCss: template(null, "Home/Home.styl", `${ paths.pages }/Home`),
+    html: template("Html", "Html.jsx", `${ paths.layouts }/Html`),
+    htmlCss: template("Html", "Html.styl", `${ paths.layouts }/Html`),
+    home: template("Home", "Home.jsx", `${ paths.pages }/Home`),
+    homeCss: template("Home", "Home.styl", `${ paths.pages }/Home`),
     normalizeCss: template("css", "normalize.css", paths.css),
     jsIndex: template("js", "index.js", paths.js),
 
