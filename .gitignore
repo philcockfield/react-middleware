@@ -2,3 +2,5 @@
 lib
 node_modules
 npm-debug.log
+/example/site/public/js
+/test/samples/site/public/js

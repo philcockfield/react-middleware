@@ -1,6 +1,6 @@
 "use strict"
 import { expect } from "chai";
-import { getOptions } from "../src/css";
+import { getOptions } from "../src/router-css";
 
 const NODE_ENV = process.env.NODE_ENV
 
