@@ -28,8 +28,6 @@ const SETTINGS = {
 
 
 const getConfiguration = function(config, options) {
-    console.log("get config");
-    // console.log("R.clone", R.clone);
     options = options || {};
     config = R.merge(R.clone(SETTINGS), R.clone(config));
     if (options.minify) {
@@ -46,7 +44,6 @@ const getConfiguration = function(config, options) {
 export default (middleware) => {
   const { paths } = middleware;
 
-
   const BASE = {
     entry: paths.js,
     output: {
@@ -58,22 +55,11 @@ export default (middleware) => {
 
   const settings = getConfiguration(BASE);
   // webpack(settings, (err, result) => {
-  //   console.log("err", err);
-  //   console.log("result", result);
   // })
 
 
-
   middleware.get("/js", (req, res) => {
-
-    const path = `${ paths.public }/js/base.js`;
-    console.log("path", path);
-    res.sendFile(path);
-
-
-
-
-
-
+      const path = `${ paths.public }/js/base.js`;
+      res.sendFile(path);
   });
 };
