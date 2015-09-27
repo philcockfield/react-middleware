@@ -28,8 +28,7 @@ const isMixin = (path) => {
 
 
 
-export default (middleware, options = {}) => {
-  const { paths, templates } = middleware;
+export default (middleware, paths, options = {}) => {
   options = getOptions(options);
 
   // Bail out if the /css folder does not exist.

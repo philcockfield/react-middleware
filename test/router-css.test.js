@@ -8,6 +8,7 @@ const BASE_PATH = "./test/samples/site";
 
 
 describe("css", function() {
+  this.timeout(10000);
   beforeEach(() => ServerPages.clearCache());
   afterEach(() => ServerPages.clearCache());
 

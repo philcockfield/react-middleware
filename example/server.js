@@ -5,8 +5,6 @@ import chalk from "chalk";
 
 
 // ReactServerPages.start({ base:"./example/site" });
-
-
 // ReactServerPages.clearCache();
 
 const middleware = ReactServerPages({ base:"./example/site" });
@@ -15,6 +13,17 @@ const middleware = ReactServerPages({ base:"./example/site" });
 // Create the folder-structure and base template files.
 middleware.clearCache();
 middleware.templates.create();
+
+middleware.build()
+.then(result => {
+  console.log("build", result);
+})
+.catch(err => {
+  console.log("err", err)
+  throw err
+})
+
+
 
 middleware.start();
 

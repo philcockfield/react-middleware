@@ -39,15 +39,13 @@ const getFilePath = (basePath, name, extension) => {
 
 
 
-export default (middleware) => {
-  const { paths, templates } = middleware;
+export default (middleware, paths, routes) => {
   const getLayout = (route) => {
           const layoutName = route.layout || "Html";
           let path = getFilePath(paths.layouts, layoutName, "jsx");
           if (!path) { throw new Error(`A layout named '${ layoutName }' does not exist.`); }
           return require(path);
   };
-
 
   const getPage = (route) => {
           const pageName = route.page;
@@ -88,7 +86,6 @@ export default (middleware) => {
   };
 
   // Regsiter each route as a GET handler.
-  const routes = templates.routes.import();
   _.forIn(routes, (route, pattern) => {
       route.pattern = pattern;
       middleware.get(pattern, (req, res) => { render(req, res, route); });

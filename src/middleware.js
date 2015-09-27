@@ -1,3 +1,4 @@
+import R from "ramda";
 import _ from "lodash";
 import express from "express";
 import fsCss from "fs-css";
@@ -5,9 +6,55 @@ import middlewarePaths from "./paths";
 import routerCss from "./router-css";
 import routerHtml from "./router-html";
 import routerJs from "./router-js";
-import templates from "./templates";
+import webpackBuilder from "./webpack-builder";
+import templatesFiles from "./templates";
 
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
+
+
+
+const start = (middleware, options = {}) => {
+  const PORT = options.port || IS_PRODUCTION ? 80 : 8080;
+  const NAME = options.name || "Server"
+  const SILENT = options.silent === undefined ? false : options.silent;
+  express()
+    .use(middleware)
+    .listen(PORT, () => {
+          if (!SILENT) {
+            const HR = _.repeat("-", 80)
+            console.log("\n");
+            console.log(`${ NAME }:`);
+            console.log(HR);
+            console.log(" - port:", PORT);
+            console.log(" - env: ", process.env.NODE_ENV || "development");
+            console.log("");
+          }
+    });
+  return middleware;
+};
+
+
+
+const build = (middleware, paths, routes) => {
+  let builtResponse;
+  return (options = {}) => {
+    return new Promise((resolve, reject) => {
+        if (builtResponse && options.force !== true) {
+          // Don't rebuild if compilation has already occured.
+          resolve(builtResponse);
+        } else {
+          webpackBuilder(paths, routes)
+          .then(result => {
+              builtResponse = result;
+              resolve(result);
+          })
+          .catch(err => reject(err))
+        }
+    });
+  }
+};
+
+
 
 
 /**
@@ -28,41 +75,23 @@ const IS_PRODUCTION = process.env.NODE_ENV === "production";
 const api = (options = {}) => {
   // Prepare the middleware.
   const middleware = express.Router();
-  middleware.paths = middlewarePaths(options);
-  middleware.templates = templates(middleware.paths);
-  routerHtml(middleware);
-  routerCss(middleware, options.css);
+  const paths = middleware.paths = middlewarePaths(options);
+  const templates = middleware.templates = templatesFiles(middleware.paths);
+  const routes = templates.routes.import();
+
+  routerHtml(middleware, paths, routes);
+  routerCss(middleware, paths, options.css);
   routerJs(middleware);
 
   // Decorate with functions.
   middleware.start = (options) => start(middleware, options);
   middleware.clearCache = () => api.clearCache();
+  middleware.build = build(middleware, paths, routes);
 
   // Finish up.
   return middleware;
 };
 
-
-
-const start = (middlware, options = {}) => {
-  const PORT = options.port || IS_PRODUCTION ? 80 : 8080;
-  const NAME = options.name || "Server"
-  const SILENT = options.silent === undefined ? false : options.silent;
-  express()
-    .use(middlware)
-    .listen(PORT, () => {
-          if (!SILENT) {
-            const HR = _.repeat("-", 80)
-            console.log("\n");
-            console.log(`${ NAME }:`);
-            console.log(HR);
-            console.log(" - port:", PORT);
-            console.log(" - env: ", process.env.NODE_ENV || "development");
-            console.log("");
-          }
-    });
-  return middlware;
-};
 
 
 /**
@@ -72,7 +101,7 @@ const start = (middlware, options = {}) => {
  *            - name:   The display name of the server (emitted to the console).
  *            - silent: Flag indicating if startup output should be suppressed.
 
- *            - <see main middlware options>
+ *            - <see main middleware options>
  */
 api.start = (options = {}) => start(api(options), options);
 
@@ -81,7 +110,7 @@ api.start = (options = {}) => start(api(options), options);
  * Clears all cached content.
  */
 api.clearCache = () => {
-  fsCss.clearCache();
+  fsCss.delete();
 };
 
 // ----------------------------------------------------------------------------

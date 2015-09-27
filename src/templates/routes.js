@@ -1,7 +1,8 @@
 export default {
   "/": {
-    page: "home",
+    page: "Home",
     title: "Home Page",
-    props: {}
+    props: {},
+    entry: "entry.js" // Optional.
   }
 };
