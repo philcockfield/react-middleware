@@ -5,6 +5,8 @@ import fsPath from "path";
 
 export const BUILD_PATH = fsPath.resolve("./.build/webpack");
 const NODE_MODULES_PATH = fsPath.join(__dirname, "../node_modules");
+const IS_PRODUCTION = process.env.NODE_ENV === "production";
+
 const modulePath = (path) =>  { return fsPath.join(NODE_MODULES_PATH, path); };
 
 
@@ -46,24 +48,42 @@ const getSettings = (entry, output, options = {}) => {
 
 
 
-const compile = (entryPath, outputPath, options) => {
-    const config = getSettings(entryPath, outputPath, options);
+const shortenError = (error) => {
+  if (error.name === "ModuleBuildError") {
+    const index = error.message.indexOf("    at ");
+    if (index > -1) {
+      error.message = error.message.substr(0, index);
+    }
+  }
+};
+
+
+
+const compile = (entryPath, outputPath) => {
+    const minify = IS_PRODUCTION;
+    const config = getSettings(entryPath, outputPath, { minify });
     return new Promise((resolve, reject) => {
         webpack(config, (err, result) => {
-          if (err) {
-            reject(err)
-          } else {
-            const elapsed = result.endTime - result.startTime;
-            const stats = fs.lstatSync(outputPath);
-            resolve({ elapsed, fileSize: stats.size })
-          }
+            if (err) {
+              reject({ errors:[ err ] })
+            } else {
+              const errors = result.compilation.errors;
+              if (errors.length > 0) {
+                errors.forEach(error => shortenError(error));
+                reject({ errors });
+              } else {
+                const elapsed = result.endTime - result.startTime;
+                const stats = fs.lstatSync(outputPath);
+                resolve({ elapsed, fileSize: stats.size });
+              }
+            }
         });
     });
 
 };
 
 
-export default (paths, routes, options) => {
+export default (paths, routes) => {
 
   // Build the list of paths to compile.
   const items = [];
@@ -88,7 +108,7 @@ export default (paths, routes, options) => {
             if (index < items.length) {
               const item = items[index];
               if (fs.existsSync(item.entry)) {
-                compile(item.entry, item.output, options)
+                compile(item.entry, item.output)
                 .then(result => {
                       response.files.push({
                         path: item.entry.replace(paths.base, ""),

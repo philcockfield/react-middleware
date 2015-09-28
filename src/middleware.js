@@ -1,5 +1,6 @@
 import R from "ramda";
 import _ from "lodash";
+import chalk from "chalk";
 import express from "express";
 import fsCss from "fs-css";
 import middlewarePaths from "./paths";
@@ -8,6 +9,7 @@ import routerHtml from "./router-html";
 import routerJs from "./router-js";
 import webpackBuilder from "./webpack-builder";
 import templatesFiles from "./templates";
+import { formatBytes } from "./util";
 
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
 
@@ -17,19 +19,35 @@ const start = (middleware, options = {}) => {
   const PORT = options.port || IS_PRODUCTION ? 80 : 8080;
   const NAME = options.name || "Server"
   const SILENT = options.silent === undefined ? false : options.silent;
-  express()
-    .use(middleware)
-    .listen(PORT, () => {
-          if (!SILENT) {
-            const HR = _.repeat("-", 80)
-            console.log("\n");
-            console.log(`${ NAME }:`);
-            console.log(HR);
-            console.log(" - port:", PORT);
-            console.log(" - env: ", process.env.NODE_ENV || "development");
-            console.log("");
-          }
-    });
+
+  // Build the javascript (webpack).
+  middleware.build()
+  .then(js => {
+    console.log("js", js);
+
+    // Start the express server.
+    express()
+      .use(middleware)
+      .listen(PORT, () => {
+            if (!SILENT) {
+              const HR = _.repeat("-", 80)
+              console.log("\n");
+              console.log(`${ NAME }:`);
+              console.log(chalk.grey(HR));
+              console.log(" - port:", chalk.cyan(PORT));
+              console.log(" - env:", process.env.NODE_ENV || "development");
+              if (js.files.length > 0) {
+                console.log(" - js", chalk.grey(`(${ (js.elapsed / 1000).toPrecision(1) }s)`));
+                js.files.forEach(item => {
+                    console.log(chalk.grey(`   - ${ item.path },`), formatBytes(item.fileSize, 1));
+                });
+              }
+              console.log("");
+            }
+      });
+
+  });
+
   return middleware;
 };
 
@@ -48,7 +66,14 @@ const build = (middleware, paths, routes) => {
               builtResponse = result;
               resolve(result);
           })
-          .catch(err => reject(err))
+          .catch(err => {
+            // Failed to build.
+            if (err.errors) {
+              console.error(chalk.red("FAILED to compile javascript.\n"))
+              err.errors.forEach(error => console.error(error.message));
+            }
+            reject(err)
+          })
         }
     });
   }
@@ -81,7 +106,7 @@ const api = (options = {}) => {
 
   routerHtml(middleware, paths, routes);
   routerCss(middleware, paths, options.css);
-  routerJs(middleware);
+  routerJs(middleware, routes);
 
   // Decorate with functions.
   middleware.start = (options) => start(middleware, options);

@@ -14,14 +14,6 @@ const middleware = ReactServerPages({ base:"./example/site" });
 middleware.clearCache();
 middleware.templates.create();
 
-middleware.build()
-.then(result => {
-  console.log("build", result);
-})
-.catch(err => {
-  console.log("err", err)
-  throw err
-})
 
 
 
