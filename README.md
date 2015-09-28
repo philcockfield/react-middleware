@@ -1,5 +1,5 @@
-# react-server-pages
-[![Build Status](https://travis-ci.org/philcockfield/react-server-pages.svg?branch=master)](https://travis-ci.org/philcockfield/react-server-pages)
+# react-middleware
+[![Build Status](https://travis-ci.org/philcockfield/react-middleware.svg?branch=master)](https://travis-ci.org/philcockfield/react-middleware)
 
 Connect middleware for serving React components from a standard folder structure.
 

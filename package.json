@@ -1,5 +1,5 @@
 {
-  "name": "react-server-pages",
+  "name": "react-middleware",
   "version": "1.0.3",
   "description": "Connect middleware for serving React components from a standard folder structure.",
   "main": "./lib",
@@ -39,7 +39,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/philcockfield/react-server-pages"
+    "url": "https://github.com/philcockfield/react-middleware"
   },
   "keywords": [
     "react,express,connect,middleware,server"
@@ -49,6 +49,6 @@
     "email": "phil@cockfield.net",
     "url": "https://github.com/philcockfield"
   },
-  "homepage": "https://github.com/philcockfield/react-server-pages",
+  "homepage": "https://github.com/philcockfield/react-middleware",
   "license": "MIT"
 }
