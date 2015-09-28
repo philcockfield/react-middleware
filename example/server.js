@@ -12,4 +12,5 @@ const middleware = ReactServerPages({ base:"./example/site" });
 // middleware.clearCache();
 // middleware.templates.create();
 // middleware.start();
-middleware.init();
+// middleware.init();
+middleware.start();

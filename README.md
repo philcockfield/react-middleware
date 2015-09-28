@@ -3,11 +3,6 @@
 
 Connect middleware for serving React components from a standard folder structure.
 
-## TODO
-- [ ] js (common scrip)
-- [ ] webpack react
-- [ ] caching
-- [ ] gzip - compressions
 
 
 ## CSS

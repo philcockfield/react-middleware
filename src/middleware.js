@@ -2,6 +2,7 @@ import R from "ramda";
 import _ from "lodash";
 import chalk from "chalk";
 import express from "express";
+import compression from "compression";
 import css from "file-system-css";
 import middlewarePaths from "./paths";
 import routerCss from "./router-css";
@@ -103,6 +104,9 @@ const api = (options = {}) => {
   const paths = middleware.paths = middlewarePaths(options);
   const templates = middleware.templates = templatesFiles(middleware.paths);
   const routes = templates.routes.import();
+  if (IS_PRODUCTION) {
+    middleware.use(compression());
+  }
 
   routerHtml(middleware, paths, routes);
   routerCss(middleware, paths, { watch });
