@@ -67,12 +67,12 @@ const build = (middleware, paths, routes) => {
               resolve(result);
           })
           .catch(err => {
-            // Failed to build.
-            if (err.errors) {
-              console.error(chalk.red("FAILED to compile javascript.\n"))
-              err.errors.forEach(error => console.error(error.message));
-            }
-            reject(err)
+              // Failed to build.
+              if (err.errors) {
+                console.error(chalk.red("FAILED to compile javascript.\n"))
+                err.errors.forEach(error => console.error(error.message));
+              }
+              reject(err)
           })
         }
     });
@@ -91,13 +91,13 @@ const build = (middleware, paths, routes) => {
  *            - layouts:    The relative or absolute path to the page layouts folder.
  *            - components: The relative or absolute path to the shared components folder.
  *            - pages:      The relative or absolute path to the pages folder.
- *            - css:
- *                - minify: Flag indicating if compiled CSS should be compressed.
- *                          True by default when in "production".
- *                - watch:  Flag indicating if changes to CSS files should invalidate the cache.
+ *            - watch:      Flag indicating if changes to files should invalidate the cache.
  *                          True by default when not in "production".
  */
 const api = (options = {}) => {
+  // Setup initial conditions.
+  const watch = R.is(Boolean, options.watch) ? options.watch : !IS_PRODUCTION;
+
   // Prepare the middleware.
   const middleware = express.Router();
   const paths = middleware.paths = middlewarePaths(options);
@@ -105,7 +105,7 @@ const api = (options = {}) => {
   const routes = templates.routes.import();
 
   routerHtml(middleware, paths, routes);
-  routerCss(middleware, paths, options.css);
+  routerCss(middleware, paths, { watch });
   routerJs(middleware, routes);
 
   // Decorate with functions.

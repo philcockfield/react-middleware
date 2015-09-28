@@ -16,7 +16,7 @@ describe("css", function() {
   const render = (path, callback) => {
     const app =
       express()
-      .use(ServerPages({ base:BASE_PATH }));
+      .use(ServerPages({ base:BASE_PATH, watch: false }));
     request(app)
       .get(path)
       .expect(200)
