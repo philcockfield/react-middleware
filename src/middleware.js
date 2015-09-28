@@ -16,7 +16,7 @@ const IS_PRODUCTION = process.env.NODE_ENV === "production";
 
 
 const start = (middleware, options = {}) => {
-  const PORT = options.port || IS_PRODUCTION ? 80 : 8080;
+  const PORT = options.port || (IS_PRODUCTION ? 80 : 8080);
   const NAME = options.name || "Server"
   const SILENT = options.silent === undefined ? false : options.silent;
 
