@@ -139,9 +139,9 @@ api.start = (options = {}) => start(api(options), options);
 /**
  * Clears all cached content.
  */
-api.clearCache = () => {
-  css.delete();
-};
+api.clearCache = () => css.delete();
+
+
 
 // ----------------------------------------------------------------------------
 export default api;
