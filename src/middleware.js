@@ -2,7 +2,7 @@ import R from "ramda";
 import _ from "lodash";
 import chalk from "chalk";
 import express from "express";
-import fsCss from "fs-css";
+import css from "file-system-css";
 import middlewarePaths from "./paths";
 import routerCss from "./router-css";
 import routerHtml from "./router-html";
@@ -135,7 +135,7 @@ api.start = (options = {}) => start(api(options), options);
  * Clears all cached content.
  */
 api.clearCache = () => {
-  fsCss.delete();
+  css.delete();
 };
 
 // ----------------------------------------------------------------------------

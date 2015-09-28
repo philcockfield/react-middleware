@@ -1,7 +1,7 @@
 import _ from "lodash";
 import fs from "fs-extra";
 import fsPath from "path";
-import fsCss from "fs-css";
+import css from "file-system-css";
 
 let NODE_ENV = process.env.NODE_ENV;
 const IS_PRODUCTION = NODE_ENV === "production";
@@ -92,7 +92,7 @@ export default (middleware, paths, options = {}) => {
         }
 
         // Compile the CSS (or retrieve from cache).
-        fsCss.compile([globalMixinPaths, sourcePaths], options)
+        css.compile([globalMixinPaths, sourcePaths], options)
         .then(result => {
               const css = result.css;
               if (_.isString(css)) {
