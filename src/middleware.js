@@ -37,7 +37,7 @@ const start = (middleware, options = {}) => {
               console.log(" - port:", chalk.cyan(PORT));
               console.log(" - env: ", process.env.NODE_ENV || "development");
               if (js.files.length > 0) {
-                console.log(" - js:  ", `${ (js.elapsed / 1000).toPrecision(1) }s build time`);
+                console.log(" - js:  ", `${ (js.elapsed / 1000).toPrecision(1) } sec build time`);
                 js.files.forEach(item => {
                     console.log(chalk.cyan(`         - ${ item.path },`), util.fileSize(item.fileSize));
                 });
@@ -110,6 +110,7 @@ const api = (options = {}) => {
 
   // Decorate with functions.
   middleware.start = (options) => start(middleware, options);
+  middleware.init = (options) => { templates.create(); middleware.start(options); }
   middleware.clearCache = () => api.clearCache();
   middleware.build = build(middleware, paths, routes);
 
