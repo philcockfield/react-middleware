@@ -11,7 +11,7 @@ const middleware = ReactServerPages({ base:"./example/site" });
 // const app = express().use(middleware);
 
 // Create the folder-structure and base template files.
-middleware.clearCache();
+// middleware.clearCache();
 middleware.templates.create();
 
 

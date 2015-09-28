@@ -9,7 +9,7 @@ import routerHtml from "./router-html";
 import routerJs from "./router-js";
 import webpackBuilder from "./webpack-builder";
 import templatesFiles from "./templates";
-import { formatBytes } from "./util";
+import * as util from "./util";
 
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
 
@@ -21,9 +21,9 @@ const start = (middleware, options = {}) => {
   const SILENT = options.silent === undefined ? false : options.silent;
 
   // Build the javascript (webpack).
+  console.log(chalk.grey("Starting..."));
   middleware.build()
   .then(js => {
-    console.log("js", js);
 
     // Start the express server.
     express()
@@ -35,11 +35,11 @@ const start = (middleware, options = {}) => {
               console.log(`${ NAME }:`);
               console.log(chalk.grey(HR));
               console.log(" - port:", chalk.cyan(PORT));
-              console.log(" - env:", process.env.NODE_ENV || "development");
+              console.log(" - env: ", process.env.NODE_ENV || "development");
               if (js.files.length > 0) {
-                console.log(" - js", chalk.grey(`(${ (js.elapsed / 1000).toPrecision(1) }s)`));
+                console.log(" - js:  ", `${ (js.elapsed / 1000).toPrecision(1) }s build time`);
                 js.files.forEach(item => {
-                    console.log(chalk.grey(`   - ${ item.path },`), formatBytes(item.fileSize, 1));
+                    console.log(chalk.cyan(`         - ${ item.path },`), util.fileSize(item.fileSize));
                 });
               }
               console.log("");
