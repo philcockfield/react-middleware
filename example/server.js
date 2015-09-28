@@ -1,11 +1,11 @@
 import express from "express";
-import ReactServerPages from "../src";
+import ReactMiddleware from "../src";
 
 
-// ReactServerPages.start({ base:"./example/site" });
-// ReactServerPages.clearCache();
+// ReactMiddleware.start({ base:"./example/site" });
+// ReactMiddleware.clearCache();
 
-const middleware = ReactServerPages({ base:"./example/site" });
+const middleware = ReactMiddleware({ base:"./example/site" });
 // const app = express().use(middleware);
 
 // Create the folder-structure and base template files.
