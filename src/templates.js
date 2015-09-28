@@ -22,6 +22,7 @@ export default (paths) => {
     htmlCss: template("Html", "Html.styl", `${ paths.layouts }/Html`),
     home: template("Home", "Home.jsx", `${ paths.pages }/Home`),
     homeCss: template("Home", "Home.styl", `${ paths.pages }/Home`),
+    homeEntry: template("Home", "entry.js", `${ paths.pages }/Home`),
     normalizeCss: template("css", "normalize.css", paths.css),
     jsIndex: template("js", "index.js", paths.js),
 

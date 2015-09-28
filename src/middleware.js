@@ -110,7 +110,7 @@ const api = (options = {}) => {
 
   // Decorate with functions.
   middleware.start = (options) => start(middleware, options);
-  middleware.init = (options) => { templates.create(); middleware.start(options); }
+  middleware.init = () => { templates.create(); }
   middleware.clearCache = () => api.clearCache();
   middleware.build = build(middleware, paths, routes);
 
