@@ -20,9 +20,7 @@
     "js-util": "^1.0.5",
     "lodash": "^3.10.1",
     "ramda": "^0.17.1",
-    "webpack": "^1.12.2"
-  },
-  "peerDependencies": {
+    "webpack": "^1.12.2",
     "react": "^0.13.3"
   },
   "devDependencies": {
