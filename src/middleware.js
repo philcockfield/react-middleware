@@ -104,13 +104,13 @@ const api = (options = {}) => {
   const paths = middleware.paths = middlewarePaths(options);
   const templates = middleware.templates = templatesFiles(middleware.paths);
   const routes = templates.routes.import();
-  if (IS_PRODUCTION) {
-    middleware.use(compression());
-  }
-
+  middleware.use(express.static(paths.public, { maxage: "60 days" }))
   routerHtml(middleware, paths, routes);
   routerCss(middleware, paths, { watch });
   routerJs(middleware, routes);
+  if (IS_PRODUCTION) {
+    middleware.use(compression());
+  }
 
   // Decorate with functions.
   middleware.start = (options) => start(middleware, options);
