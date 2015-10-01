@@ -1,3 +1,4 @@
+import R from "ramda";
 import _ from "lodash";
 import React from "react";
 import fs from "fs-extra";
@@ -39,7 +40,7 @@ const getFilePath = (basePath, name, extension) => {
 
 
 
-export default (middleware, paths, routes) => {
+export default (middleware, paths, routes, data) => {
   const getLayout = (route) => {
           const layoutName = route.layout || "Html";
           let path = getFilePath(paths.layouts, layoutName, "jsx");
@@ -54,11 +55,13 @@ export default (middleware, paths, routes) => {
           return require(path);
   };
 
+  const getData = (route, url) => R.is(Function, data) ? data({ route, url }) : data;
+
   const render = (req, res, route) => {
           // Setup initial conditions.
           const params = _.forIn(req.params, (value, key) => { req.params[key] = util.toType(value); });
           const url = {
-            path:req.url,
+            path: req.url,
             pathname: Url.parse(req.url).pathname,
             query: req.query,
             pattern: route.pattern,
@@ -68,13 +71,16 @@ export default (middleware, paths, routes) => {
           route = asValues(route, args);
 
           // Prepare the page body.
+          const data = getData(route, url);
           const pageProps = route.props || {};
+          pageProps.data = pageProps.data || data;
           const pageBody = React.createElement(getPage(route), pageProps);
 
           // Prepare the root <Html> page props.
           const layoutProps = {
             title: route.title,
             body: pageBody,
+            data,
             env: NODE_ENV,
             page: { name: route.page }
           };
