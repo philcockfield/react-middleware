@@ -3,6 +3,51 @@
 
 Connect middleware for serving React components from a standard folder structure.
 
+## Getting Started
+
+    npm install --save react-middleware
+
+Once the module is added to your project, you can initialize the convention base folder structure using the `init` method:
+
+```js
+import ReactMiddleware from "../src";
+const middleware = ReactMiddleware({ base:"./site" });
+middleware.init();
+```
+
+The `init` method need only be called once, and it lays down the following folder structure within the base folder:
+
+
+    /site
+      |-- routes.js         # Page routes.
+      |-- css               # Global stylesheets.
+      |-- public            # Static assets.
+      |-- views
+          |-- components    # Reusable UI components.
+          |-- js            # Common javascript.
+          |-- layouts       # Root level page layouts.
+          |-- pages         # Specific pages.
+
+
+From here you can start the server, either by calling `start` directly on the middleware, optionally passing a port:
+
+```js
+middleware.start(3030);
+```
+
+Or by applying it to an existing connect server:
+
+```js
+import express from "express";
+import ReactMiddleware from "../src";
+const middleware = ReactMiddleware({ base:"./site" });
+const app = express().use(middleware);
+app.listen(3030);
+
+```
+
+
+
 
 
 ## CSS
@@ -70,18 +115,3 @@ Some common CSS paths are provided:
 <link href="/css/components" /><!-- All components -->
 <link href="/css/component/:Name1,:Name2" /><!-- The specified page or comma-seperated list of pages -->
 ```
-
-
-
-
-## Run
-    npm install
-    npm start
-
-
-## Test
-    # Run tests.
-    npm test
-
-    # Watch and re-run tests.
-    npm run tdd
