@@ -15,13 +15,13 @@ export default class Template {
   /**
    * Determines whether the file for the template already exists.
    */
-  exists() { return fs.existsSync(this.targetPath); }
+  existsSync() { return fs.existsSync(this.targetPath); }
 
   /**
    * Copies the template file to the target path.
    */
-  copy() {
-    if (!this.exists()) {
+  copySync() {
+    if (!this.existsSync()) {
       fs.copySync(this.sourcePath, this.targetPath);
     }
     return this;
@@ -31,7 +31,7 @@ export default class Template {
    * Imports the target file as a module.
    */
   import() {
-    this.copy();
+    this.copySync();
     return require(this.targetPath);
   }
 }

@@ -33,7 +33,7 @@ export default (paths) => {
       paths.createSync();
       _.forIn(templates, (file) => {
           if (file instanceof Template) {
-            file.copy();
+            file.copySync();
           }
       });
     }
