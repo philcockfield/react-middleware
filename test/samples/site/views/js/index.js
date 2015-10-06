@@ -1,1 +1,3 @@
-console.log("/js: index");
+if (typeof window !== 'undefined') {
+  console.log("Client: index.js");
+}
