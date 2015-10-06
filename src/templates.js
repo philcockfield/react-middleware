@@ -29,8 +29,8 @@ export default (paths) => {
     /**
      * Creates all template files if they don't already exist.
      */
-    create() {
-      paths.create();
+    createSync() {
+      paths.createSync();
       _.forIn(templates, (file) => {
           if (file instanceof Template) {
             file.copy();

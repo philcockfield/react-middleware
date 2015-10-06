@@ -12,7 +12,7 @@ describe("templates", function() {
   let middleware;
   beforeEach(() => {
     middleware = ReactMiddleware({ base: BASE_PATH });
-    middleware.paths.create();
+    middleware.paths.createSync();
   });
 
   const deleteFolder = () => { fs.removeSync(fsPath.resolve(BASE_PATH)); }
@@ -29,7 +29,7 @@ describe("templates", function() {
   });
 
   it("files do exist", () => {
-    middleware.templates.create();
+    middleware.templates.createSync();
     _.forIn(middleware.templates, (file) => {
       if (_.isFunction(file.exists)) {
         expect(file.exists()).to.equal(true);
@@ -42,7 +42,7 @@ describe("templates", function() {
     const path = templates.routes.targetPath;
     fs.removeSync(path);
     fs.outputFileSync(path, "let foo = 123;");
-    templates.create();
+    templates.createSync();
     expect(fs.readFileSync(path).toString()).to.equal("let foo = 123;");
   });
 });

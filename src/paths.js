@@ -22,7 +22,7 @@ const pathsExist = (paths) => {
 };
 
 
-const createFolders = (paths) => {
+const createFoldersSync = (paths) => {
   _.forIn(paths, (path, key) => {
     if (_.isString(path)) { fs.ensureDirSync(path); }
   });
@@ -53,7 +53,7 @@ export default (options = {}) => {
     components: folder("components", "/views/components"),
     pages: folder("pages", "/views/pages"),
     js: folder("js", "/views/js"),
-    create() { createFolders(paths); }
+    createSync() { createFoldersSync(paths); }
   };
   paths.exist = pathsExist(paths);
 

@@ -120,7 +120,6 @@ const api = (options = {}) => {
 
   // Decorate with functions.
   middleware.start = (options) => start(middleware, options);
-  middleware.init = () => { templates.create(); }
   middleware.clearCache = () => api.clearCache();
   middleware.build = build(middleware, paths, routes);
 
@@ -145,8 +144,22 @@ api.start = (options = {}) => start(api(options), options);
 /**
  * Clears all cached content.
  */
-api.clearCache = () => css.delete();
+api.clearCache = () => {
+  css.delete();
+  return api;
+};
 
+
+/**
+ * Initalizes the default folder/template structure.
+ * @param {string} path:  The base-path. Use "./" to create
+ *                        relative to the root of the host module.
+ */
+api.init = (path) => {
+  if (!R.is(String, path)) { throw new Error("Base path not given to init(). Use './' to create relative to the root of the host module."); }
+  api({ base: path }).templates.createSync();
+  return api;
+};
 
 
 // ----------------------------------------------------------------------------

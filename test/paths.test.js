@@ -75,12 +75,12 @@ describe("middleware.paths", function() {
 
     it("creates folders", () => {
       const middleware = ReactMiddleware({ base: BASE_PATH });
-      middleware.paths.create();
+      middleware.paths.createSync();
       expect(middleware.paths.exist).to.equal(true);
     });
 
     it("has partial folders", () => {
-      ReactMiddleware({ base: BASE_PATH }).paths.create();
+      ReactMiddleware({ base: BASE_PATH }).paths.createSync();
       fs.removeSync(fsPath.resolve(BASE_PATH, "views/pages"));
       const middleware = ReactMiddleware({ base: BASE_PATH });
       expect(middleware.paths.exist).to.equal("partial");
