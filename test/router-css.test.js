@@ -2,21 +2,21 @@
 import { expect } from "chai";
 import express from "express";
 import request from "supertest";
-import ServerPages from "../src";
+import ReactMiddleware from "../src";
 
 const BASE_PATH = "./test/samples/site";
 
 
 describe("css", function() {
   this.timeout(10000);
-  beforeEach(() => ServerPages.clearCache());
-  afterEach(() => ServerPages.clearCache());
+  beforeEach(() => ReactMiddleware.clearCache());
+  afterEach(() => ReactMiddleware.clearCache());
 
 
   const render = (path, callback) => {
     const app =
       express()
-      .use(ServerPages({ base:BASE_PATH, watch: false }));
+      .use(ReactMiddleware({ base:BASE_PATH, watch: false }));
     request(app)
       .get(path)
       .expect(200)

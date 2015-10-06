@@ -3,7 +3,7 @@ import _ from "lodash";
 import { expect } from "chai";
 import fs from "fs-extra";
 import fsPath from "path";
-import ServerPages from "../src";
+import ReactMiddleware from "../src";
 
 const BASE_PATH = "./test/samples/sample-templates";
 
@@ -11,7 +11,7 @@ const BASE_PATH = "./test/samples/sample-templates";
 describe("templates", function() {
   let middleware;
   beforeEach(() => {
-    middleware = ServerPages({ base: BASE_PATH });
+    middleware = ReactMiddleware({ base: BASE_PATH });
     middleware.paths.create();
   });
 

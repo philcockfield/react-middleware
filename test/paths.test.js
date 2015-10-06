@@ -2,7 +2,7 @@
 import { expect } from "chai";
 import fs from "fs-extra";
 import fsPath from "path";
-import ServerPages from "../src";
+import ReactMiddleware from "../src";
 
 
 
@@ -19,19 +19,19 @@ describe("middleware.paths", function() {
   describe("base", function() {
     it("has custom (absolute)", () => {
       const path = fsPath.resolve("./test/samples/base");
-      const middleware = ServerPages({ base: path });
+      const middleware = ReactMiddleware({ base: path });
       expect(middleware.paths.base).to.equal(path);
     });
 
     it("has custom (relative)", () => {
       const path = "./test/samples/base"
-      expect(ServerPages({ base: path }).paths.base).to.equal(fsPath.resolve(path));
+      expect(ReactMiddleware({ base: path }).paths.base).to.equal(fsPath.resolve(path));
     });
   });
 
   describe("project structure", function() {
     it("has default paths", () => {
-      const middleware = ServerPages({ base: "./test/samples/site" });
+      const middleware = ReactMiddleware({ base: "./test/samples/site" });
       const paths = middleware.paths;
       expect(paths.css).to.equal(`${ paths.base }/css`);
       expect(paths.public).to.equal(`${ paths.base }/public`);
@@ -43,7 +43,7 @@ describe("middleware.paths", function() {
 
     it("has custom paths", () => {
       const path = fsPath.resolve("./test/samples/custom");
-      const middleware = ServerPages({
+      const middleware = ReactMiddleware({
         base: path,
         css: path,
         public: path,
@@ -69,20 +69,20 @@ describe("middleware.paths", function() {
     const BASE_PATH = "./test/sample-paths";
 
     it("does not have folders", () => {
-      const middleware = ServerPages({ base: BASE_PATH });
+      const middleware = ReactMiddleware({ base: BASE_PATH });
       expect(middleware.paths.exist).to.equal(false);
     });
 
     it("creates folders", () => {
-      const middleware = ServerPages({ base: BASE_PATH });
+      const middleware = ReactMiddleware({ base: BASE_PATH });
       middleware.paths.create();
       expect(middleware.paths.exist).to.equal(true);
     });
 
     it("has partial folders", () => {
-      ServerPages({ base: BASE_PATH }).paths.create();
+      ReactMiddleware({ base: BASE_PATH }).paths.create();
       fs.removeSync(fsPath.resolve(BASE_PATH, "views/pages"));
-      const middleware = ServerPages({ base: BASE_PATH });
+      const middleware = ReactMiddleware({ base: BASE_PATH });
       expect(middleware.paths.exist).to.equal("partial");
     });
 

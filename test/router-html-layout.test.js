@@ -2,7 +2,7 @@
 import { expect } from "chai";
 import express from "express";
 import request from "supertest";
-import ServerPages from "../src";
+import ReactMiddleware from "../src";
 
 const BASE_PATH = "./test/samples/site";
 
@@ -10,7 +10,7 @@ const BASE_PATH = "./test/samples/site";
 describe("render: layout", function() {
   const render = (path, callback) => {
     const app = express();
-    const middleware = ServerPages({ base:BASE_PATH });
+    const middleware = ReactMiddleware({ base:BASE_PATH });
     app.use(middleware);
     request(app)
       .get(path)
