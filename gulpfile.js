@@ -1,5 +1,6 @@
 "use strict"
 var gulp = require("gulp");
+var plumber = require('gulp-plumber');
 var eslint = require("gulp-eslint");
 var babel = require("gulp-babel");
 var SOURCE_PATH = "./src/**/*.js";
@@ -7,8 +8,9 @@ var SOURCE_PATH = "./src/**/*.js";
 
 gulp.task("build", function () {
   return gulp.src(SOURCE_PATH)
-    .pipe(babel())
-    .pipe(gulp.dest("lib"));
+             .pipe(plumber()) // Keep task alive on build errors.
+             .pipe(babel())
+             .pipe(gulp.dest("lib"));
 });
 gulp.task("watch", function(callback) { gulp.watch(SOURCE_PATH, ["build"]) });
 
@@ -17,8 +19,8 @@ gulp.task("watch", function(callback) { gulp.watch(SOURCE_PATH, ["build"]) });
 
 gulp.task("lint", function() {
   return gulp.src(SOURCE_PATH)
-    .pipe(eslint())
-    .pipe(eslint.format());
+             .pipe(eslint())
+             .pipe(eslint.format());
 });
 
 
