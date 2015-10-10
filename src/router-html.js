@@ -1,6 +1,7 @@
 import R from "ramda";
 import _ from "lodash";
 import React from "react";
+import ReactDOMServer from "react-dom/server";
 import fs from "fs-extra";
 import fsPath from "path";
 import Url from "url";
@@ -87,7 +88,7 @@ export default (middleware, paths, routes, data) => {
 
           // Convert the page-layout into HTML.
           const layout = React.createElement(getLayout(route), layoutProps);
-          const html = React.renderToStaticMarkup(layout);
+          const html = ReactDOMServer.renderToStaticMarkup(layout);
           res.send(html);
   };
 

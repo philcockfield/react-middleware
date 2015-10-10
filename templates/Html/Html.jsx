@@ -15,8 +15,8 @@ export default class Html extends React.Component {
         </head>
         <body>
           <div id="root">{ this.props.body }</div>
+          <script type="text/javascript" src="/js"/>
         </body>
-        <script type="text/javascript" src="/js"/>
       </html>
     );
   }
