@@ -21,10 +21,10 @@ The `init` method need only be called once, and it lays down the following folde
     /site
       |-- routes.js         # Page routes.
       |-- css               # Global stylesheets.
+      |-- scripts           # Global javascript (eg. analytics).
       |-- public            # Static assets.
       |-- views
           |-- components    # Reusable UI components.
-          |-- js            # Common javascript.
           |-- layouts       # Root level page layouts.
           |-- pages         # Specific pages.
 
