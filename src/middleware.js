@@ -118,7 +118,7 @@ api.start = (app, middleware, options = {}) => {
         console.log(chalk.grey(" - port:"), 3030);
         console.log(chalk.grey(" - env: "), process.env.NODE_ENV || "development");
         if (js.files.length > 0) {
-          console.log(chalk.grey(" - js:  "), `${ (js.elapsed / 1000).toPrecision(1) } sec build time`);
+          console.log(chalk.grey(" - js:  "), `${ (js.elapsed / 1000).toPrecision(1) } second build time`);
           js.files.forEach(item => {
               console.log(chalk.grey(`         - ${ item.path },`), util.fileSize(item.fileSize));
           });
