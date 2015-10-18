@@ -24,7 +24,7 @@ export default (paths) => {
     homeCss: template("Home", "Home.styl", `${ paths.pages }/Home`),
     homeEntry: template("Home", "entry.js", `${ paths.pages }/Home`),
     normalizeCss: template("css", "normalize.css", paths.css),
-    jsIndex: template("js", "index.js", paths.js),
+    scripts: template("scripts", "index.js", paths.scripts),
 
     /**
      * Creates all template files if they don't already exist.

@@ -93,7 +93,7 @@ export default (paths, routes) => {
           output: `${ BUILD_PATH }/${ outputFile }`
         })
       };
-  add(`${ paths.js }/index.js`, "base.js");
+  add(`${ paths.scripts }/index.js`, "base.js");
   R.values(routes).map(item => {
         const entry = `${ paths.pages }/${ item.page }/${ item.entry || "entry.js" }`;
         if (fs.existsSync(entry)) {

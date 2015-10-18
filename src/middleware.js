@@ -156,7 +156,7 @@ api.clearCache = () => {
  *                        relative to the root of the host module.
  */
 api.init = (path) => {
-  if (!R.is(String, path)) { throw new Error("Base path not given to init(). Use './' to create relative to the root of the host module."); }
+  if (!R.is(String, path)) { path = "./site"; }
   api({ base: path }).templates.createSync();
   return api;
 };

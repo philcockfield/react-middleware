@@ -52,7 +52,7 @@ export default (options = {}) => {
     layouts: folder("layouts", "/views/layouts"),
     components: folder("components", "/views/components"),
     pages: folder("pages", "/views/pages"),
-    js: folder("js", "/views/js"),
+    scripts: folder("scripts", "/scripts"),
     createSync() { createFoldersSync(paths); }
   };
   paths.exist = pathsExist(paths);

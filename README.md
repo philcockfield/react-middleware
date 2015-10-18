@@ -10,9 +10,9 @@ Connect middleware for serving React components from a standard folder structure
 Once the module is added to your project, you can initialize the convention base folder structure using the `init` method:
 
 ```js
-import ReactMiddleware from "../src";
-const middleware = ReactMiddleware({ base:"./site" });
-middleware.init();
+require("babel/register")({ stage: 1 });
+var ReactMiddleware = require("react-middleware");
+ReactMiddleware.init("./site");
 ```
 
 The `init` method need only be called once, and it lays down the following folder structure within the base folder:
@@ -32,6 +32,7 @@ The `init` method need only be called once, and it lays down the following folde
 From here you can start the server, either by calling `start` directly on the middleware, optionally passing a port:
 
 ```js
+var middleware = ReactMiddleware({ base:"./site" });
 middleware.start(3030);
 ```
 
