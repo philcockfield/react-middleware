@@ -3,6 +3,7 @@
 
 Connect middleware for serving React components from a standard folder structure.
 
+
 ## Getting Started
 
     npm install --save react-middleware
@@ -29,23 +30,51 @@ The `init` method need only be called once, and it lays down the following folde
           |-- pages         # Specific pages.
 
 
-From here you can start the server, either by calling `start` directly on the middleware, optionally passing a port:
+
+From here you can start the server in the following ways:
+
+##### Instance Helper on Middleware
 
 ```js
 var middleware = ReactMiddleware({ base:"./site" });
-middleware.start(3030);
+middleware.start(3030)
+.then(() => {
+  // Startup complete (callback).
+});
 ```
 
-Or by applying it to an existing connect server:
+##### Static Helper on Middleware
+This option is useful if you want to incorporate your `react-middleware` site within a wider Express application.
 
 ```js
-import express from "express";
-import ReactMiddleware from "react-middleware";
-const middleware = ReactMiddleware({ base:"./site" });
-const app = express().use(middleware);
-app.listen(3030);
-
+var app = express();
+var middleware = ReactMiddleware({ base:"./example/site" });
+ReactMiddleware.start(app, middleware, { port: 3030 })
+.then(() => {
+  // Startup complete (callback).
+});
 ```
+
+##### Using Express
+Alternatively you can start the server using Express without the convenience
+methods shown above:
+
+
+```js
+    const app = express();
+    const site = ReactMiddleware({ base:"./example/site" });
+    site.build()
+    .then(() => {
+        app
+          .use(site)
+          .listen(3030, () => {
+              console.log("Listening on port", 3030);
+          });
+    });
+```
+
+Notice the `build()` step that ensures all the static assets (js,css) have been compiled.
+
 
 
 

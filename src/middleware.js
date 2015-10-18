@@ -16,46 +16,7 @@ const IS_PRODUCTION = process.env.NODE_ENV === "production";
 
 
 
-const start = (middleware, options = {}) => {
-  if (R.is(Number, options)) { options = { port: options }; }
-  const PORT = options.port || (IS_PRODUCTION ? 80 : 8080);
-  const NAME = options.name || "Server"
-  const SILENT = options.silent === undefined ? false : options.silent;
-
-  // Build the javascript (webpack).
-  console.log(chalk.grey("Starting..."));
-  middleware.build()
-  .then(js => {
-
-    // Start the express server.
-    express()
-      .use(middleware)
-      .listen(PORT, () => {
-            if (!SILENT) {
-              const HR = _.repeat("-", 80)
-              console.log("\n");
-              console.log(`${ NAME }:`);
-              console.log(chalk.grey(HR));
-              console.log(" - port:", chalk.cyan(PORT));
-              console.log(" - env: ", process.env.NODE_ENV || "development");
-              if (js.files.length > 0) {
-                console.log(" - js:  ", `${ (js.elapsed / 1000).toPrecision(1) } sec build time`);
-                js.files.forEach(item => {
-                    console.log(chalk.cyan(`         - ${ item.path },`), util.fileSize(item.fileSize));
-                });
-              }
-              console.log("");
-            }
-      });
-
-  });
-
-  return middleware;
-};
-
-
-
-const build = (middleware, paths, routes) => {
+const buildFunction = (middleware, paths, routes) => {
   let builtResponse;
   return (options = {}) => {
     return new Promise((resolve, reject) => {
@@ -119,9 +80,9 @@ const api = (options = {}) => {
   }
 
   // Decorate with functions.
-  middleware.start = (options) => start(middleware, options);
+  middleware.start = (startOptions) => api.start(express(), middleware, startOptions);
   middleware.clearCache = () => api.clearCache();
-  middleware.build = build(middleware, paths, routes);
+  middleware.build = buildFunction(middleware, paths, routes);
 
   // Finish up.
   return middleware;
@@ -131,23 +92,61 @@ const api = (options = {}) => {
 
 /**
  * Starts a web server.
+ * @param {function} app: The express instance (eg. app = express();)
+ *                        If not specified a new express instance is created.
+ * @param {function} middleware: The react-middleware instance to use.
  * @param {options}
- *            - port:   The port to run on (default 80:production | 8080:development).
+ *            - port:   The port to run on.
  *            - name:   The display name of the server (emitted to the console).
  *            - silent: Flag indicating if startup output should be suppressed.
-
- *            - <see main middleware options>
+ * @return Promise.
  */
-api.start = (options = {}) => start(api(options), options);
+api.start = (app, middleware, options = {}) => {
+  // Ensure required parameters were passed.
+  if (!R.is(Function, app)) { throw new Error(`Start Method: An express instance must be specified.`); }
+  if (!R.is(Function, middleware)) { throw new Error(`Start Method: The [react-middleware] instance must be specified.`); }
 
+  // Extract startup values.
+  if (R.is(Number, options)) { options = { port: options }; }
+  const PORT = options.port || (IS_PRODUCTION ? 80 : 3030);
+  const NAME = options.name || "Server"
+  const SILENT = options.silent === undefined ? false : options.silent;
 
-/**
- * Clears all cached content.
- */
-api.clearCache = () => {
-  css.delete();
-  return api;
+  const logStarted = (js) => {
+        console.log("");
+        console.log(chalk.green(`${ NAME }:`));
+        console.log(chalk.grey(" - port:"), 3030);
+        console.log(chalk.grey(" - env: "), process.env.NODE_ENV || "development");
+        if (js.files.length > 0) {
+          console.log(chalk.grey(" - js:  "), `${ (js.elapsed / 1000).toPrecision(1) } sec build time`);
+          js.files.forEach(item => {
+              console.log(chalk.grey(`         - ${ item.path },`), util.fileSize(item.fileSize));
+          });
+        }
+        console.log("");
+      };
+
+  return new Promise((resolve, reject) => {
+      // Build the javascript (webpack).
+      console.log(chalk.grey("Starting..."));
+      middleware.build()
+      .then(js => {
+
+        // Configure and start the express server.
+        app
+          .use(middleware)
+          .listen(PORT, () => {
+                if (!SILENT) { logStarted(js); }
+                resolve();
+          });
+
+      })
+      .catch(err => {
+        console.log("err", err);
+      });
+  });
 };
+
 
 
 /**
@@ -160,6 +159,17 @@ api.init = (path) => {
   api({ base: path }).templates.createSync();
   return api;
 };
+
+
+
+/**
+ * Clears all cached content.
+ */
+api.clearCache = () => {
+  css.delete();
+  return api;
+};
+
 
 
 // ----------------------------------------------------------------------------
