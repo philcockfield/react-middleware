@@ -12,10 +12,6 @@ describe("init", function() {
   beforeEach(() => deleteFolder());
   afterEach(() => deleteFolder());
 
-  it("throws if path not specified", () => {
-    expect(() => ReactMiddleware.init()).to.throw();
-  });
-
   it("returns the module API", () => {
     const result = ReactMiddleware.init(PATH);
     expect(result).to.equal(ReactMiddleware);
