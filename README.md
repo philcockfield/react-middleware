@@ -40,7 +40,7 @@ Or by applying it to an existing connect server:
 
 ```js
 import express from "express";
-import ReactMiddleware from "../src";
+import ReactMiddleware from "react-middleware";
 const middleware = ReactMiddleware({ base:"./site" });
 const app = express().use(middleware);
 app.listen(3030);
