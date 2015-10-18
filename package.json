@@ -1,6 +1,6 @@
 {
   "name": "react-middleware",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Connect middleware for serving React components from a standard folder structure.",
   "main": "./lib",
   "scripts": {
