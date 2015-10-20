@@ -24,7 +24,10 @@ export default (paths) => {
     homeCss: template("Home", "Home.styl", `${ paths.pages }/Home`),
     homeEntry: template("Home", "entry.js", `${ paths.pages }/Home`),
     normalizeCss: template("css", "normalize.css", paths.css),
+    globalMixins: template("css", "global.mixin.styl", paths.css),
     scripts: template("scripts", "index.js", paths.scripts),
+    imageMoon1x: template("images", "moon.jpg", `${ paths.public }/images`),
+    imageMoon2x: template("images", "moon@2x.jpg", `${ paths.public }/images`),
 
     /**
      * Creates all template files if they don't already exist.

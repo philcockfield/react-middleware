@@ -3,9 +3,15 @@ import express from "express";
 import ReactMiddleware from "../src";
 
 
+const PATH = "./example/site";
+
+
+// ReactMiddleware.init(PATH);
+
+
 
 const startWithMiddlewareInstanceMethod = () => {
-    const middleware = ReactMiddleware({ base:"./example/site" });
+    const middleware = ReactMiddleware({ base: PATH });
     middleware.start()
     .then(() => console.log("Start Callback"));
 };
@@ -14,7 +20,7 @@ const startWithMiddlewareInstanceMethod = () => {
 
 const startWithStaticHelperMethod = () => {
     const app = express();
-    const middleware = ReactMiddleware({ base:"./example/site" });
+    const middleware = ReactMiddleware({ base: PATH });
     ReactMiddleware.start(app, middleware, { port: 3030 })
     .then(() => console.log("Start Callback"));
   };
@@ -24,7 +30,7 @@ const startWithStaticHelperMethod = () => {
 
 const startWithExpress = () => {
     const app = express();
-    const site = ReactMiddleware({ base:"./example/site" });
+    const site = ReactMiddleware({ base: PATH });
     site.build()
     .then(() => {
         app
