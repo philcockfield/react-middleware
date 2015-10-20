@@ -1,0 +1,113 @@
+$RED = rgba(255, 0, 0, 0.05)
+
+
+
+// --------------------------------------------------------------------
+
+
+
+
+toUnit(prop, value, unit=px)
+  if value is not null
+    {prop} unit(value, unit)
+
+
+clearfix()
+  // See: https://css-tricks.com/snippets/css/clear-fix/
+  &:after
+    content ""
+    display table
+    clear both
+
+
+// Position --------------------------------------------------------
+
+
+abs-pos(top = 0, right = 0, bottom = 0, left = 0, unit=px)
+  position absolute
+  toUnit 'left', left, unit
+  toUnit 'top', top, unit
+  toUnit 'right', right, unit
+  toUnit 'bottom', bottom, unit
+
+
+fixed-pos(top = 0, right = 0, bottom = 0, left = 0, unit=px)
+  position fixed
+  toUnit 'left', left, unit
+  toUnit 'top', top, unit
+  toUnit 'right', right, unit
+  toUnit 'bottom', bottom, unit
+
+
+// Size --------------------------------------------------------
+
+
+size(width, height = width, unit=px)
+  toUnit 'width',  width,  unit
+  toUnit 'height', height, unit
+
+min-size(width, height = width, unit=px)
+  toUnit 'width',  min-width,  unit
+  toUnit 'height', min-height, unit
+
+
+// Center Position ------------------------------------------------------
+
+
+abs-center-x(offset = 0)
+  position absolute
+  left 50%
+  transform translateX(-50%)
+  toUnit 'margin-left', offset
+
+abs-center-y(offset = 0)
+  position absolute
+  top 50%
+  transform translateY(-50%)
+  toUnit 'margin-top', offset
+
+abs-center(offsetX = 0, offsetY = 0)
+  position absolute
+  left 50%
+  top 50%
+  transform translate(-50%, -50%)
+  toUnit 'margin-left', offsetX
+  toUnit 'margin-top', offsetY
+
+
+
+
+// ------------------------------------------------------
+
+
+bg-image(path, width=null, height=null, repeat=null)
+  // Size.
+  height = width if height is null
+  size(width, height, 'px')
+
+  // Image path.
+  if match('.svg$', path)
+    // SVG's don't need an @2x retina version.
+    background-image url(path)
+  else
+    // Give all other image types the @2x retina version.
+    image path, unit(width, 'px'), unit(height, 'px')
+
+  // Repeat.
+  repeat = no-repeat if repeat is null
+  background-repeat repeat
+
+
+
+// ---------------------------------
+
+
+query-max-width(pixelWidth)
+  'only screen and (max-width : ' + pixelWidth + 'px)'
+
+query-min-width(pixelWidth)
+  'only screen and (min-width : ' + pixelWidth + 'px)'
+
+NARROW      = query-max-width(900)
+WIDE        = query-min-width(901)
+EXTRA_WIDE  = query-min-width(1024)

@@ -5,7 +5,7 @@ import Home from "./Home";
 if (typeof window !== "undefined") {
   console.log("Home/entry.js");
   ReactDOM.render(
-    React.createElement(Home, { title: "Client" }),
+    React.createElement(Home, { title: "Getting Started" }),
     document.getElementById("root")
   );
 }
