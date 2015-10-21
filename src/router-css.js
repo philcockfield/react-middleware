@@ -1,4 +1,4 @@
-import _ from "lodash";
+import R from "ramda";
 import fs from "fs-extra";
 import fsPath from "path";
 import css from "file-system-css";
@@ -8,7 +8,8 @@ let NODE_ENV = process.env.NODE_ENV;
 const IS_PRODUCTION = NODE_ENV === "production";
 
 const RESET_NAMES = ["normalize.css", "reset.css"];
-const isCssReset = (path) => _.any(RESET_NAMES, name => _.endsWith(path, name));
+const isCssReset = (path) => R.any(name => path.endsWith(name), RESET_NAMES);
+
 
 export const getOptions = (options = {}) => {
     const isProduction = process.env.NODE_ENV === "production";
@@ -23,7 +24,7 @@ export const getOptions = (options = {}) => {
 const isMixin = (path) => {
     const name = fsPath.basename(path, ".styl");
     if (name === "mixin") { return true; }
-    if (_.endsWith(name, ".mixin")) { return true; }
+    if (name.endsWith(".mixin")) { return true; }
     return false;
   };
 
@@ -36,19 +37,20 @@ export default (middleware, paths, options = {}) => {
   if (!fs.existsSync(paths.css)) { return; }
 
   // Determine whether a CSS reset file exists within /css.
-  const globalCssPaths = _.map(fs.readdirSync(paths.css), path => fsPath.join(`${ paths.css }/${ path }`));
-  const globalMixinPaths = _.filter(globalCssPaths, isMixin);
-  const cssResetPath = _.chain(globalCssPaths)
-        .filter(isCssReset)
-        .map(fileName => fsPath.join(paths.css, fileName))
-        .value();
+  const globalCssPaths = fs.readdirSync(paths.css).map(path => fsPath.join(`${ paths.css }/${ path }`));
+  const globalMixinPaths = R.filter(isMixin, globalCssPaths);
+  const cssResetPath = R.pipe(
+    R.filter(isCssReset),
+    R.map(fileName => fsPath.join(paths.css, fileName))
+  )(globalCssPaths);
+
 
   const toSourcePath = (key, value) => {
         const expandPaths = (base, value) => {
-          return _.chain(value)
-                  .split(",")
-                  .map(folder => `${ base }/${ _.trim(folder) }`)
-                  .value();
+            return R.pipe(
+              R.split(","),
+              R.map(folder => `${ base }/${ folder.trim() }`)
+            )(value);
         };
 
         const path = paths[key];
@@ -69,25 +71,25 @@ export default (middleware, paths, options = {}) => {
   const queryToSourcePaths = (query) => {
       // Process the query-string converting it into a set
       // of paths that point to the source CSS files.
-      query = _.clone(query);
-      query = _.isEmpty(query)
+      query = R.clone(query);
+      query = Object.keys(query).length === 0
           ? { global: true, pages: true, components: true, layouts: true }
           : query;
 
-      return _.chain(query)
-          .keys()
-          .map(key => toSourcePath(key, query[key]))
-          .flatten(true)
-          .compact()
-          .value();
+      return R.pipe(
+        R.keys,
+        R.map(key => toSourcePath(key, query[key])),
+        R.flatten(),
+        R.reject(R.isNil)
+      )(query);
   };
 
 
   // Render the CSS response.
   const render = (req, res, sourcePaths = []) => {
         // Prep the source paths.
-        if (!_.isArray(sourcePaths)) { sourcePaths = [sourcePaths]; }
-        sourcePaths = _.flatten(sourcePaths, true);
+        if (!R.is(Array, sourcePaths)) { sourcePaths = [sourcePaths]; }
+        sourcePaths = R.flatten(sourcePaths);
         if (sourcePaths.length === 0) {
           return res.status(404).send({ message: `No CSS paths to load.` })
         }
@@ -96,7 +98,7 @@ export default (middleware, paths, options = {}) => {
         css.compile([globalMixinPaths, sourcePaths], options)
         .then(result => {
               const css = result.css;
-              if (_.isString(css)) {
+              if (R.is(String, css)) {
                 res.set("Content-Type", "text/css");
                 res.send(css);
               } else {
@@ -117,7 +119,7 @@ export default (middleware, paths, options = {}) => {
 
   const renderGroup = (req, res, keys = []) => {
       const query = {};
-      _.forEach(keys, key => query[key] = true);
+      keys.forEach(key => query[key] = true);
       render(req, res, queryToSourcePaths(query));
   };
 
