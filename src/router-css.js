@@ -2,6 +2,7 @@ import _ from "lodash";
 import fs from "fs-extra";
 import fsPath from "path";
 import css from "file-system-css";
+import chalk from "chalk";
 
 let NODE_ENV = process.env.NODE_ENV;
 const IS_PRODUCTION = NODE_ENV === "production";
@@ -102,11 +103,16 @@ export default (middleware, paths, options = {}) => {
                 res.status(404).send({ message: `No CSS at ${ req.url }` });
               }
         })
-        .catch(err => res.status(500).send({
-              error: `Failed to compile CSS for ${ req.url }`,
-              message: err.message,
-              paths: sourcePaths
-        }))
+        .catch(err => {
+              const args = {
+                  error: `Failed to compile CSS for URL path '${ req.url }'`,
+                  message: err.message,
+                  paths: sourcePaths
+              };
+              console.error(chalk.red(args.error));
+              console.error(chalk.red(args.message));
+              res.status(500).send(args);
+        });
   };
 
   const renderGroup = (req, res, keys = []) => {
