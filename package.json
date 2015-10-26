@@ -3,6 +3,9 @@
   "version": "1.1.5",
   "description": "Connect middleware for serving React components from a standard folder structure.",
   "main": "./lib",
+  "engines": {
+    "node": "^4.0.0"
+  },
   "scripts": {
     "start": "node ./example",
     "watch": "nodemon ./example -e js,jsx --ignore .build",
