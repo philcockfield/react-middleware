@@ -5,12 +5,18 @@ import fsPath from "path";
 const packageVersion = (modulePath) => fs.readJsonSync(fsPath.join(modulePath, "package.json")).version;
 
 
+
 /**
  * Ensure the `react` module exists within root module
  * and that it is the correct version.
  */
 const REACT_PATH = fsPath.join(__dirname, "../node_modules/react")
 const PARENT_REACT_PATH = fsPath.resolve("./node_modules/react");
+
+console.log("REACT_PATH", REACT_PATH);
+console.log("PARENT_REACT_PATH", PARENT_REACT_PATH);
+console.log("");
+
 if (REACT_PATH !== PARENT_REACT_PATH) {
   if (fs.existsSync(PARENT_REACT_PATH)) {
     // Ensure matching version.
