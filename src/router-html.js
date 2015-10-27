@@ -1,5 +1,4 @@
 import R from "ramda";
-import _ from "lodash";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
 import fs from "fs-extra";
@@ -13,7 +12,8 @@ const IS_PRODUCTION = NODE_ENV === "production";
 
 const asValues = (obj, args) => {
     const result = R.clone(obj);
-    _.forIn(obj, (value, key) => {
+    Object.keys(obj).forEach(key => {
+          const value = obj[key];
           if (R.is(Function, value)) {
             result[key] = value(args); // Convert the function into a value.
           } else if (R.is(Object, value)) {
@@ -59,7 +59,7 @@ export default (middleware, paths, routes, data) => {
 
   const render = (req, res, route) => {
           // Setup initial conditions.
-          const params = _.forIn(req.params, (value, key) => { req.params[key] = util.toType(value); });
+          const params = Object.keys(req.params).map(key => { req.params[key] = util.toType(req.params[key]); });
           const url = {
             path: req.url,
             pathname: Url.parse(req.url).pathname,
@@ -95,7 +95,8 @@ export default (middleware, paths, routes, data) => {
   };
 
   // Regsiter each route as a GET handler.
-  _.forIn(routes, (route, pattern) => {
+  Object.keys(routes).forEach(pattern => {
+      const route = routes[pattern];
       route.pattern = pattern;
       middleware.get(pattern, (req, res) => { render(req, res, route); });
   });
