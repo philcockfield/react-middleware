@@ -11,17 +11,16 @@ const NODE_ENV = process.env.NODE_ENV || "development";
 const IS_PRODUCTION = NODE_ENV === "production";
 
 
-
 const asValues = (obj, args) => {
-    obj = _.clone(obj, true);
+    const result = R.clone(obj);
     _.forIn(obj, (value, key) => {
-          if (_.isFunction(value)) {
-            obj[key] = value(args); // Convert the function into a value.
-          } else if (_.isObject(value)) {
-            asValues(value, args); // <== RECURSION.
+          if (R.is(Function, value)) {
+            result[key] = value(args); // Convert the function into a value.
+          } else if (R.is(Object, value)) {
+            result[key] = asValues(value, args); // <== RECURSION.
           }
     });
-    return obj;
+    return result;
 };
 
 
@@ -74,7 +73,10 @@ export default (middleware, paths, routes, data) => {
           // Prepare the page body.
           const data = getData(route, url);
           const pageProps = route.props || {};
-          pageProps.data = pageProps.data || data;
+          const pageData = pageProps.data || data
+          if (pageData) {
+            pageProps.data = pageData;
+          }
           const pageBody = React.createElement(getPage(route), pageProps);
 
           // Prepare the root <Html> page props.
