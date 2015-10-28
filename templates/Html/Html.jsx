@@ -14,7 +14,7 @@ export default class Html extends React.Component {
           <link href="/css/common" rel="stylesheet"/>
         </head>
         <body>
-          <div id="root">{ this.props.body }</div>
+          <div id="root" data-props={ JSON.stringify(this.props.body.props) }>{ this.props.body }</div>
           <script type="text/javascript" src="/js"/>
         </body>
       </html>

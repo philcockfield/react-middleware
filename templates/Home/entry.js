@@ -4,8 +4,12 @@ import Home from "./Home";
 
 if (typeof window !== "undefined") {
   console.log("Home/entry.js");
+
+  const elRoot = document.getElementById("root");
+  const props = JSON.parse(elRoot.dataset.props || "{}");
+
   ReactDOM.render(
-    React.createElement(Home, { title: "Getting Started" }),
-    document.getElementById("root")
+    React.createElement(Home, props),
+    elRoot
   );
 }
