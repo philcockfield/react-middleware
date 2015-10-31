@@ -68,18 +68,19 @@ const api = (options = {}) => {
 
   // Prepare the middleware.
   const middleware = express.Router();
+
   const paths = middleware.paths = middlewarePaths(options);
   const templates = middleware.templates = templatesFiles(middleware.paths);
   const routes = templates.routes.import();
-  middleware.use(express.static(paths.public, { maxage: "60 days" }))
+
+  middleware.use(compression());
+  middleware.use(express.static(paths.public, { maxage: "60 days" }));
+
   routerHtml(middleware, paths, routes, options.data);
   routerCss(middleware, paths, { watch });
   routerJs(middleware, routes);
-  if (IS_PRODUCTION) {
-    middleware.use(compression());
-  }
 
-  // Decorate with functions.
+  // Decorate the middleware with functions.
   middleware.start = (startOptions) => api.start(express(), middleware, startOptions);
   middleware.clearCache = () => api.clearCache();
   middleware.build = buildFunction(middleware, paths, routes);
