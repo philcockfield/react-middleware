@@ -1,17 +1,17 @@
 {
   "name": "react-middleware",
-  "version": "1.1.9",
+  "version": "1.2.0",
   "description": "Connect middleware for serving React components from a standard folder structure.",
   "main": "./lib",
   "engines": {
-    "node": "^4.0.0"
+    "node": "^5.0.0"
   },
   "scripts": {
     "start": "node ./example",
     "watch": "nodemon ./example -e js,jsx --ignore .build",
     "test": "./node_modules/mocha/bin/mocha --recursive --compilers js:babel/register",
     "tdd": "./node_modules/mocha/bin/mocha --recursive --compilers js:babel/register --watch",
-    "prepublish": "gulp build"
+    "prepublish": "gulp lint && gulp build"
   },
   "dependencies": {
     "babel-core": "^5.8.25",

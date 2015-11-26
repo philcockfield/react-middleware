@@ -2,7 +2,6 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-
 ## [Unreleased]
 #### Added
 #### Changed
@@ -11,6 +10,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 #### Fixed
 #### Security
 
-## [0.0.1] - YYYY-MM-DD
+
+## [1.2.0] - 2015-11-26
+
 #### Added
-Initial creation and publish.
+- Lint command within the `prepublish` script.
+
+#### Changed
+- Increase required node version to `^5.0.0`
+#### Removed
+- Init script that copied react into the root `node_modules`.  No longer needed given the way Node 5 manages modules.
