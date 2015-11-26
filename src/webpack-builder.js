@@ -4,7 +4,7 @@ import fs from "fs-extra";
 import fsPath from "path";
 
 export const BUILD_PATH = fsPath.resolve("./.build/webpack");
-const NODE_MODULES_PATH = fsPath.join(__dirname, "../node_modules");
+const NODE_MODULES_PATH = fsPath.resolve("./node_modules");
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
 
 const modulePath = (path) =>  { return fsPath.join(NODE_MODULES_PATH, path); };
