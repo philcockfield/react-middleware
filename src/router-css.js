@@ -4,8 +4,6 @@ import fsPath from "path";
 import css from "file-system-css";
 import chalk from "chalk";
 
-let NODE_ENV = process.env.NODE_ENV;
-const IS_PRODUCTION = NODE_ENV === "production";
 
 const RESET_NAMES = ["normalize.css", "reset.css"];
 const isCssReset = (path) => R.any(name => path.endsWith(name), RESET_NAMES);
@@ -46,14 +44,13 @@ export default (middleware, paths, options = {}) => {
 
 
   const toSourcePath = (key, value) => {
-        const expandPaths = (base, value) => {
+        const expandPaths = (base, path) => {
             return R.pipe(
               R.split(","),
               R.map(folder => `${ base }/${ folder.trim() }`)
-            )(value);
+            )(path);
         };
 
-        const path = paths[key];
         switch (key) {
           case "global": return [ cssResetPath, paths.css ];
 
@@ -91,16 +88,16 @@ export default (middleware, paths, options = {}) => {
         if (!R.is(Array, sourcePaths)) { sourcePaths = [sourcePaths]; }
         sourcePaths = R.flatten(sourcePaths);
         if (sourcePaths.length === 0) {
-          return res.status(404).send({ message: `No CSS paths to load.` })
+          return res.status(404).send({ message: `No CSS paths to load.` });
         }
 
         // Compile the CSS (or retrieve from cache).
         css.compile([globalMixinPaths, sourcePaths], options)
         .then(result => {
-              const css = result.css;
-              if (R.is(String, css)) {
+              const cssResult = result.css;
+              if (R.is(String, cssResult)) {
                 res.set("Content-Type", "text/css");
-                res.send(css);
+                res.send(cssResult);
               } else {
                 res.status(404).send({ message: `No CSS at ${ req.url }` });
               }

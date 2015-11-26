@@ -1,6 +1,6 @@
-import R from "ramda";
 import fs from "fs-extra";
 import { BUILD_PATH } from "./webpack-builder";
+
 
 const send = (res, path) => {
     path = `${ BUILD_PATH }/${ path }`;
@@ -8,9 +8,9 @@ const send = (res, path) => {
         if (exists) {
           res.sendFile(path);
         } else {
-          res.status(404).send({ message: "Javascript file not found." })
+          res.status(404).send({ message: "Javascript file not found." });
         }
-    })
+    });
 };
 
 

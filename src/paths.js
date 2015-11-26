@@ -18,12 +18,12 @@ const pathsExist = (paths) => {
   const existsTotal = _.sum(values, (exists) => exists ? 1 : 0);
   if (existsTotal === values.length) { return true; }
   if (existsTotal === 0) { return false; }
-  return "partial"
+  return "partial";
 };
 
 
 const createFoldersSync = (paths) => {
-  _.forIn(paths, (path, key) => {
+  _.forIn(paths, (path) => {
     if (_.isString(path)) { fs.ensureDirSync(path); }
   });
   paths.exist = pathsExist(paths);
@@ -39,10 +39,10 @@ export default (options = {}) => {
   let baseDir = options.base || "./";
   baseDir = _.startsWith(baseDir, ".")
                     ? fsPath.resolve(baseDir)
-                    : baseDir
+                    : baseDir;
 
   const folder = (param, defaultPath) => {
-        return options[param] || fsPath.join(baseDir, defaultPath)
+        return options[param] || fsPath.join(baseDir, defaultPath);
       };
 
   const paths = {

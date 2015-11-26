@@ -7,7 +7,7 @@ export const BUILD_PATH = fsPath.resolve("./.build/webpack");
 const NODE_MODULES_PATH = fsPath.resolve("./node_modules");
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
 
-const modulePath = (path) =>  { return fsPath.join(NODE_MODULES_PATH, path); };
+const modulePath = (path) => { return fsPath.join(NODE_MODULES_PATH, path); };
 
 
 const SETTINGS = {
@@ -24,9 +24,9 @@ const SETTINGS = {
   module: {
     loaders: [
       // ES6/JSX.
-      { test: /\.js$/,  exclude: /(node_modules)/, loader: "babel-loader" },
+      { test: /\.js$/, exclude: /(node_modules)/, loader: "babel-loader" },
       { test: /\.jsx$/, exclude: /(node_modules)/, loader: "babel-loader" },
-      { test: /\.json$/, loader: "json-loader" },
+      { test: /\.json$/, loader: "json-loader" }
     ]
   }
 };
@@ -65,7 +65,7 @@ const compile = (entryPath, outputPath) => {
     return new Promise((resolve, reject) => {
         webpack(config, (err, result) => {
             if (err) {
-              reject({ errors:[ err ] })
+              reject({ errors: [ err ] });
             } else {
               const errors = result.compilation.errors;
               if (errors.length > 0) {
@@ -91,7 +91,7 @@ export default (paths, routes) => {
         items.push({
           entry,
           output: `${ BUILD_PATH }/${ outputFile }`
-        })
+        });
       };
   add(`${ paths.scripts }/index.js`, "base.js");
   R.values(routes).map(item => {
@@ -103,7 +103,7 @@ export default (paths, routes) => {
 
   return new Promise((resolve, reject) => {
       // Run each item through the webpack compiler.
-      const response = { files: [] }
+      const response = { files: [] };
       const compileItem = (index) => {
             if (index < items.length) {
               const item = items[index];
@@ -114,7 +114,7 @@ export default (paths, routes) => {
                         path: item.entry.replace(paths.base, ""),
                         elapsed: result.elapsed,
                         fileSize: result.fileSize
-                      })
+                      });
                       compileItem(index + 1); // <== RECURSION.
                 })
                 .catch(err => reject(err));

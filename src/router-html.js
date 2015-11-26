@@ -7,7 +7,6 @@ import Url from "url";
 import * as util from "js-util";
 
 const NODE_ENV = process.env.NODE_ENV || "development";
-const IS_PRODUCTION = NODE_ENV === "production";
 
 
 const asValues = (obj, args) => {
@@ -71,9 +70,9 @@ export default (middleware, paths, routes, data) => {
           route = asValues(route, args);
 
           // Prepare the page body.
-          const data = getData(route, url);
+          const layoutData = getData(route, url);
           const pageProps = route.props || {};
-          const pageData = pageProps.data || data
+          const pageData = pageProps.data || layoutData;
           if (pageData) {
             pageProps.data = pageData;
           }
@@ -83,7 +82,7 @@ export default (middleware, paths, routes, data) => {
           const layoutProps = {
             title: route.title,
             body: pageBody,
-            data,
+            data: layoutData,
             env: NODE_ENV,
             page: { name: route.page }
           };

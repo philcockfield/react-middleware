@@ -1,5 +1,4 @@
 import R from "ramda";
-import _ from "lodash";
 import chalk from "chalk";
 import express from "express";
 import compression from "compression";
@@ -32,14 +31,14 @@ const buildFunction = (middleware, paths, routes) => {
           .catch(err => {
               // Failed to build.
               if (err.errors) {
-                console.error(chalk.red("FAILED to compile javascript.\n"))
+                console.error(chalk.red("FAILED to compile javascript.\n"));
                 err.errors.forEach(error => console.error(error.message));
               }
-              reject(err)
-          })
+              reject(err);
+          });
         }
     });
-  }
+  };
 };
 
 
@@ -110,7 +109,7 @@ api.start = (app, middleware, options = {}) => {
   // Extract startup values.
   if (R.is(Number, options)) { options = { port: options }; }
   const PORT = options.port || (IS_PRODUCTION ? 80 : 3030);
-  const NAME = options.name || "Server"
+  const NAME = options.name || "Server";
   const SILENT = options.silent === undefined ? false : options.silent;
 
   const logStarted = (js) => {
@@ -144,6 +143,7 @@ api.start = (app, middleware, options = {}) => {
       })
       .catch(err => {
         console.log("err", err);
+        reject(err);
       });
   });
 };
