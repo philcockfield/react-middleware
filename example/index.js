@@ -1,2 +1,2 @@
-require("babel/register")({ stage: 1 });
+require("babel-core/register")();
 require("./server");

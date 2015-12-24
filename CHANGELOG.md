@@ -2,7 +2,8 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+
+## [Unreleased] - YYYY-MM-DD
 #### Added
 #### Changed
 #### Deprecated
@@ -11,8 +12,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 #### Security
 
 
-## [1.2.0] - 2015-11-26
+## [1.2.2] - 2015-12-24
+#### Changed
+- Updated ES6 compiler to use Babel version 6 (from Babel version 5).
 
+
+## [1.2.0] - 2015-11-26
 #### Added
 - Lint command within the `prepublish` script.
 

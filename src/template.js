@@ -32,6 +32,6 @@ export default class Template {
    */
   import() {
     this.copySync();
-    return require(this.targetPath);
+    return require(this.targetPath).default;
   }
 }
