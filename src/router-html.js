@@ -44,14 +44,14 @@ export default (middleware, paths, routes, data) => {
           const layoutName = route.layout || "Html";
           let path = getFilePath(paths.layouts, layoutName, "jsx");
           if (!path) { throw new Error(`A layout named '${ layoutName }' does not exist.`); }
-          return require(path);
+          return require(path).default;
   };
 
   const getPage = (route) => {
           const pageName = route.page;
           let path = getFilePath(paths.pages, pageName, "jsx");
           if (!path) { throw new Error(`A page named '${ pageName }' does not exist.`); }
-          return require(path);
+          return require(path).default;
   };
 
   const getData = (route, url) => R.is(Function, data) ? data({ route, url }) : data;
