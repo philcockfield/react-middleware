@@ -35,7 +35,7 @@ From here you can start the server in the following ways:
 ##### Instance Helper on Middleware
 
 ```js
-var middleware = ReactMiddleware({ base:"./site" });
+const middleware = ReactMiddleware({ base:"./site" });
 middleware.start(3030)
 .then(() => {
   // Startup complete (callback).
@@ -46,8 +46,8 @@ middleware.start(3030)
 This option is useful if you want to incorporate your `react-middleware` site within a wider Express application.
 
 ```js
-var app = express();
-var middleware = ReactMiddleware({ base:"./example/site" });
+const app = express();
+const middleware = ReactMiddleware({ base:"./example/site" });
 ReactMiddleware.start(app, middleware, { port: 3030 })
 .then(() => {
   // Startup complete (callback).
