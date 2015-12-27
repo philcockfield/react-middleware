@@ -11,8 +11,7 @@ Connect middleware for serving React components from a standard folder structure
 Once the module is added to your project, you can initialize the convention base folder structure using the `init` method:
 
 ```js
-require("babel-core/register")();
-var ReactMiddleware = require("react-middleware");
+import ReactMiddleware from "react-middleware";
 ReactMiddleware.init("./site");
 ```
 
