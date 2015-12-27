@@ -60,23 +60,41 @@ methods shown above:
 
 
 ```js
-    const app = express();
-    const site = ReactMiddleware({ base:"./example/site" });
-    site.build()
-    .then(() => {
-        app
-          .use(site)
-          .listen(3030, () => {
-              console.log("Listening on port", 3030);
-          });
-    });
+const app = express();
+const site = ReactMiddleware({ base:"./example/site" });
+site.build()
+.then(() => {
+    app
+      .use(site)
+      .listen(3030, () => {
+          console.log("Listening on port", 3030);
+      });
+});
 ```
 
 Notice the `build()` step that ensures all the static assets (js,css) have been compiled.
 
 
+#### Passing Custom Loaders
+Sometimes you need to pass in custom webpack loaders:
 
+```js
+const webpackLoaders = [
+  {
+    test: /\.js$/,
+    exclude: /(node_modules)/,
+    loader: "babel",
+    query: {
+      plugins: [ fsPath.join(__dirname, "relay-plugin") ]
+    }
+  },
+  { test: /\.json$/, loader: "json" }
+];
 
+const site = ReactMiddleware({ base:"./example/site", webpackLoaders });
+```
+
+This will replace the default set of loaders with the given array.
 
 
 ## CSS

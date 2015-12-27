@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased] - YYYY-MM-DD
 #### Added
+- `webpackLoaders` parameter allowing custom loaders to be passed into the middleware.
 #### Changed
 #### Deprecated
 #### Removed

@@ -15,7 +15,7 @@ const IS_PRODUCTION = process.env.NODE_ENV === "production";
 
 
 
-const buildFunction = (middleware, paths, routes) => {
+const buildFunction = (middleware, paths, routes, loaders) => {
   let builtResponse;
   return (options = {}) => {
     return new Promise((resolve, reject) => {
@@ -23,7 +23,7 @@ const buildFunction = (middleware, paths, routes) => {
           // Don't rebuild if compilation has already occured.
           resolve(builtResponse);
         } else {
-          webpackBuilder(paths, routes)
+          webpackBuilder({ paths, routes, loaders })
           .then(result => {
               builtResponse = result;
               resolve(result);
@@ -46,20 +46,24 @@ const buildFunction = (middleware, paths, routes) => {
 
 /**
  * Returns the server middleware.
+ *
  * @param options:
- *            - base:       The relative or absolute path to the base for all other relative paths.
- *            - css:        The relative or absolute path to the global CSS folder.
- *            - public:     The relative or absolute path to the public assets folder.
- *            - layouts:    The relative or absolute path to the page layouts folder.
- *            - components: The relative or absolute path to the shared components folder.
- *            - pages:      The relative or absolute path to the pages folder.
- *            - data:       An {Object} or {Function} to pass as the root data object to the React page(s).
- *                          If a function is passed, details about the URL and rendering page are passed
- *                          as an argument.
- *                          This is useful as an API hook when creating a `react-middleware` package
- *                          to be shared as a module.
- *            - watch:      Flag indicating if changes to files should invalidate the cache.
- *                          True by default when not in "production".
+ *            - base:           The relative or absolute path to the base for all other relative paths.
+ *            - css:            The relative or absolute path to the global CSS folder.
+ *            - public:         The relative or absolute path to the public assets folder.
+ *            - layouts:        The relative or absolute path to the page layouts folder.
+ *            - components:     The relative or absolute path to the shared components folder.
+ *            - pages:          The relative or absolute path to the pages folder.
+ *            - data:           An {Object} or {Function} to pass as the root data object to the React page(s).
+ *                              If a function is passed, details about the URL and rendering page are passed
+ *                              as an argument.
+ *                              This is useful as an API hook when creating a `react-middleware` package
+ *                              to be shared as a module.
+ *            - watch:          Flag indicating if changes to files should invalidate the cache.
+ *                              True by default when not in "production".
+ *            - webpackLoaders: An array of webpack loaders to use.
+ *                              Default loaders are replaced with this array.
+ *
  */
 const api = (options = {}) => {
   // Setup initial conditions.
@@ -82,7 +86,7 @@ const api = (options = {}) => {
   // Decorate the middleware with functions.
   middleware.start = (startOptions) => api.start(express(), middleware, startOptions);
   middleware.clearCache = () => api.clearCache();
-  middleware.build = buildFunction(middleware, paths, routes);
+  middleware.build = buildFunction(middleware, paths, routes, options.webpackLoaders);
 
   // Finish up.
   return middleware;

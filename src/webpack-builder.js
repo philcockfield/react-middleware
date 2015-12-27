@@ -1,4 +1,5 @@
 import R from "ramda";
+import Promise from "bluebird";
 import webpack from "webpack";
 import fs from "fs-extra";
 import fsPath from "path";
@@ -17,16 +18,15 @@ const SETTINGS = {
     extensions: ["", ".js", ".jsx", "json"],
     alias: {
       "react": modulePath("react"),
-      "lodash": modulePath("lodash"),
       "ramda": modulePath("ramda")
     }
   },
   module: {
     loaders: [
       // ES6/JSX.
-      { test: /\.js$/, exclude: /(node_modules)/, loader: "babel-loader" },
-      { test: /\.jsx$/, exclude: /(node_modules)/, loader: "babel-loader" },
-      { test: /\.json$/, loader: "json-loader" }
+      { test: /\.js$/, exclude: /(node_modules)/, loader: "babel" },
+      { test: /\.jsx$/, exclude: /(node_modules)/, loader: "babel" },
+      { test: /\.json$/, loader: "json" }
     ]
   }
 };
@@ -42,6 +42,9 @@ const getSettings = (entry, output, options = {}) => {
     });
     if (options.minify) {
       config.plugins = [ new webpack.optimize.UglifyJsPlugin({ minimize: true }) ];
+    }
+    if (options.loaders) {
+      config.module.loaders = options.loaders;
     }
     return config;
 };
@@ -59,9 +62,9 @@ const shortenError = (error) => {
 
 
 
-const compile = (entryPath, outputPath) => {
+const compile = (entryPath, outputPath, loaders) => {
     const minify = IS_PRODUCTION;
-    const config = getSettings(entryPath, outputPath, { minify });
+    const config = getSettings(entryPath, outputPath, { minify, loaders });
     return new Promise((resolve, reject) => {
         webpack(config, (err, result) => {
             if (err) {
@@ -83,7 +86,18 @@ const compile = (entryPath, outputPath) => {
 };
 
 
-export default (paths, routes) => {
+
+/**
+ * Builder API.
+ * @param {Object} settings:
+ *            - paths:          {Object} of paths to known folders.
+ *            - routes:         {Object} of routes.
+ *            - loaders:        {Array} of webpack loaders to use.
+ *                              Default loaders are replaced with this array.
+ *
+ */
+export default (settings = {}) => {
+  const { paths, routes } = settings;
 
   // Build the list of paths to compile.
   const items = [];
@@ -108,7 +122,7 @@ export default (paths, routes) => {
             if (index < items.length) {
               const item = items[index];
               if (fs.existsSync(item.entry)) {
-                compile(item.entry, item.output)
+                compile(item.entry, item.output, settings.loaders)
                 .then(result => {
                       response.files.push({
                         path: item.entry.replace(paths.base, ""),
