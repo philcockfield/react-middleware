@@ -1,4 +1,4 @@
-import _ from "lodash";
+import R from "ramda";
 import Template from "./template";
 
 
@@ -10,7 +10,7 @@ import Template from "./template";
  */
 export default (paths) => {
   const template = (sourceDir, sourceFile, targetFolder) => {
-      sourceDir = _.isString(sourceDir) ? sourceDir + "/" : "";
+      sourceDir = R.is(String, sourceDir) ? sourceDir + "/" : "";
       const sourcePath = `../templates/${ sourceDir }${ sourceFile }`;
       const targetPath = `${ targetFolder }/${ sourceFile }`;
       return new Template(sourcePath, targetPath);
@@ -34,11 +34,12 @@ export default (paths) => {
      */
     createSync() {
       paths.createSync();
-      _.forIn(templates, (file) => {
+      Object.keys(templates).forEach(key => {
+          const file = templates[key];
           if (file instanceof Template) {
             file.copySync();
           }
-      });
+        });
     }
   };
 

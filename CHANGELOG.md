@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 #### Changed
 #### Deprecated
 #### Removed
+- Lodash references (from webpack settings as well). Now using Ramda.
 #### Fixed
 #### Security
 

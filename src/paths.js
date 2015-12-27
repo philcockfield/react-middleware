@@ -1,21 +1,26 @@
-import _ from "lodash";
+import R from "ramda";
 import fs from "fs-extra";
 import fsPath from "path";
 
 
-
 const pathsStatus = (paths) => {
-  return _.transform(paths, (result, path, key) => {
-        if (_.isString(path)) {
-          result[key] = fs.existsSync(path);
-        }
-      });
+  const result = {};
+  Object.keys(paths).forEach(key => {
+      const path = paths[key];
+      if (R.is(String, path)) {
+        result[key] = fs.existsSync(path);
+      }
+    });
+  return result;
 };
 
 
 const pathsExist = (paths) => {
-  const values = _.values(pathsStatus(paths));
-  const existsTotal = _.sum(values, (exists) => exists ? 1 : 0);
+  const values = R.values(pathsStatus(paths));
+  const existsTotal = R.pipe(
+      R.map(exists => exists ? 1 : 0),
+      R.sum
+    )(values);
   if (existsTotal === values.length) { return true; }
   if (existsTotal === 0) { return false; }
   return "partial";
@@ -23,9 +28,10 @@ const pathsExist = (paths) => {
 
 
 const createFoldersSync = (paths) => {
-  _.forIn(paths, (path) => {
-    if (_.isString(path)) { fs.ensureDirSync(path); }
-  });
+  Object.keys(paths).forEach(key => {
+      const path = paths[key];
+      if (R.is(String, path)) { fs.ensureDirSync(path); }
+    });
   paths.exist = pathsExist(paths);
 };
 
@@ -37,7 +43,7 @@ const createFoldersSync = (paths) => {
 export default (options = {}) => {
   // Prepare folder paths.
   let baseDir = options.base || "./";
-  baseDir = _.startsWith(baseDir, ".")
+  baseDir = baseDir.startsWith(".")
                     ? fsPath.resolve(baseDir)
                     : baseDir;
 
