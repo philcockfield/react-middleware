@@ -5,13 +5,18 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased] - YYYY-MM-DD
 #### Added
-- `webpackLoaders` parameter allowing custom loaders to be passed into the middleware.
 #### Changed
 #### Deprecated
 #### Removed
-- Lodash references (from webpack settings as well). Now using Ramda.
 #### Fixed
 #### Security
+
+
+## [2.0.0] - 2015-12-29
+#### Added
+- `webpackLoaders` parameter allowing custom loaders to be passed into the middleware.
+#### Removed
+- Lodash references (from webpack settings as well). Now using Ramda.
 
 
 ## [1.2.2] - 2015-12-24
