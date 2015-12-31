@@ -1,9 +1,11 @@
 {
   "name": "react-middleware",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Connect middleware for serving React components from a standard folder structure.",
   "main": "./lib",
-  "engines": { "node": "^5.0.0" },
+  "engines": {
+    "node": "^5.0.0"
+  },
   "scripts": {
     "start": "node ./example",
     "watch": "nodemon ./example -e js,jsx --ignore .build",
