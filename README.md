@@ -54,6 +54,14 @@ ReactMiddleware.start(app, middleware, { port: 3030 })
 });
 ```
 
+Options for starting:
+
+- `port`: The port to run the app on.
+- `name`: The display name of the application (emitted to console).
+- `version`: The version of the application (emitted to console).
+
+
+
 ##### Using Express
 Alternatively you can start the server using Express without the convenience
 methods shown above:
