@@ -100,9 +100,10 @@ const api = (options = {}) => {
  *                        If not specified a new express instance is created.
  * @param {function} middleware: The react-middleware instance to use.
  * @param {options}
- *            - port:   The port to run on.
- *            - name:   The display name of the server (emitted to the console).
- *            - silent: Flag indicating if startup output should be suppressed.
+ *            - port:     The port to run on.
+ *            - name:     The display name of the server (emitted to the console).
+ *            - version:  The version of the app (emitted to the console).
+ *            - silent:   Flag indicating if startup output should be suppressed.
  * @return Promise.
  */
 api.start = (app, middleware, options = {}) => {
@@ -115,16 +116,20 @@ api.start = (app, middleware, options = {}) => {
   const PORT = options.port || (IS_PRODUCTION ? 80 : 3030);
   const NAME = options.name || "Server";
   const SILENT = options.silent === undefined ? false : options.silent;
+  const VERSION = options.version;
 
   const logStarted = (js) => {
         console.log("");
-        console.log(chalk.green(`${ NAME }:`));
-        console.log(chalk.grey(" - port:"), PORT);
-        console.log(chalk.grey(" - env: "), process.env.NODE_ENV || "development");
+        console.log(chalk.green(`Started: ${ NAME }`));
+        if (VERSION) {
+          console.log(chalk.grey(" - version:"), VERSION);
+        }
+        console.log(chalk.grey(" - port:   "), PORT);
+        console.log(chalk.grey(" - env:    "), process.env.NODE_ENV || "development");
         if (js.files.length > 0) {
-          console.log(chalk.grey(" - js:  "), `${ (js.elapsed / 1000).toPrecision(1) } second build time`);
+          console.log(chalk.grey(" - js:     "), `${ (js.elapsed / 1000).toPrecision(1) } second build time`);
           js.files.forEach(item => {
-              console.log(chalk.grey(`         - ${ item.path },`), util.fileSize(item.fileSize));
+              console.log(chalk.grey(`            - ${ item.path },`), util.fileSize(item.fileSize));
           });
         }
         console.log("");
@@ -132,7 +137,7 @@ api.start = (app, middleware, options = {}) => {
 
   return new Promise((resolve, reject) => {
       // Build the javascript (webpack).
-      console.log(chalk.grey("Starting..."));
+      console.log(chalk.grey(`Starting '${ NAME }'...`));
       middleware.build()
       .then(js => {
 
