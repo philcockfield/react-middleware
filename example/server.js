@@ -17,10 +17,14 @@ const startWithMiddlewareInstanceMethod = () => {
 };
 
 
+// Simulate a custom logger, eg. Winston.
+const logger = {
+  info(msg) { console.log(msg); }
+};
 
 const startWithStaticHelperMethod = () => {
     const app = express();
-    const middleware = ReactMiddleware({ base: PATH });
+    const middleware = ReactMiddleware({ base: PATH, logger });
     ReactMiddleware.start(app, middleware, { port: 3030 })
     .then(() => console.log("Start Callback"));
   };

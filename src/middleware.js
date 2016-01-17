@@ -9,6 +9,7 @@ import routerHtml from "./router-html";
 import routerJs from "./router-js";
 import webpackBuilder from "./webpack-builder";
 import templatesFiles from "./templates";
+import log from "./log";
 import * as util from "./util";
 
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
@@ -63,6 +64,7 @@ const buildFunction = (middleware, paths, routes, loaders) => {
  *                              True by default when not in "production".
  *            - webpackLoaders: An array of webpack loaders to use.
  *                              Default loaders are replaced with this array.
+ *            - logger:         Custom logger to use (object that exposes [info, warn, error] methods).
  *
  */
 const api = (options = {}) => {
@@ -87,6 +89,7 @@ const api = (options = {}) => {
   middleware.start = (startOptions) => api.start(express(), middleware, startOptions);
   middleware.clearCache = () => api.clearCache();
   middleware.build = buildFunction(middleware, paths, routes, options.webpackLoaders);
+  middleware.logger = options.logger || log;
 
   // Finish up.
   return middleware;
@@ -118,27 +121,28 @@ api.start = (app, middleware, options = {}) => {
   const SILENT = options.silent === undefined ? false : options.silent;
   const VERSION = options.version;
 
+  const logger = middleware.logger;
   const logStarted = (js) => {
-        console.log("");
-        console.log(chalk.green(`Started: ${ NAME }`));
+        logger.info("");
+        logger.info(chalk.green(`Started: ${ NAME }`));
         if (VERSION) {
-          console.log(chalk.grey(" - version:"), VERSION);
+          logger.info(chalk.grey(" - version:"), VERSION);
         }
-        console.log(chalk.grey(" - port:   "), PORT);
-        console.log(chalk.grey(" - env:    "), process.env.NODE_ENV || "development");
+        logger.info(chalk.grey(" - port:   "), PORT);
+        logger.info(chalk.grey(" - env:    "), process.env.NODE_ENV || "development");
         if (js.files.length > 0) {
           const seconds = js.elapsed / 1000;
-          console.log(chalk.grey(" - js:     "), `${ Math.round(seconds * 10) / 10 } second build time`);
+          logger.info(chalk.grey(" - js:     "), `${ Math.round(seconds * 10) / 10 } second build time`);
           js.files.forEach(item => {
-              console.log(chalk.grey(`            - ${ item.path },`), util.fileSize(item.fileSize));
+              logger.info(chalk.grey(`            - ${ item.path },`), util.fileSize(item.fileSize));
           });
         }
-        console.log("");
+        logger.info("");
       };
 
   return new Promise((resolve, reject) => {
       // Build the javascript (webpack).
-      console.log(chalk.grey(`Starting '${ NAME }'...`));
+      logger.info(chalk.grey(`Starting '${ NAME }'...`));
       middleware.build()
       .then(js => {
 
@@ -152,7 +156,7 @@ api.start = (app, middleware, options = {}) => {
 
       })
       .catch(err => {
-        console.log("err", err);
+        logger.error("err", err);
         reject(err);
       });
   });

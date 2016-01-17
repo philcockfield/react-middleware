@@ -1,4 +1,4 @@
-# react-middleware
+Â# react-middleware
 [![Build Status](https://travis-ci.org/philcockfield/react-middleware.svg?branch=master)](https://travis-ci.org/philcockfield/react-middleware)
 
 Connect middleware for serving React components from a standard folder structure.
@@ -104,6 +104,17 @@ const site = ReactMiddleware({ base:"./example/site", webpackLoaders });
 
 This will replace the default set of loaders with the given array.
 
+
+#### Passing Custom Logger
+The ReactMiddleware logs startup information.  To have this write to a customer logger (eg [Winston](https://www.npmjs.com/package/winston)), you can pass a logger to the middleware at initialization:
+
+```js
+import winston from "winston";
+const logger = new (winston.Logger)({ ... });
+const site = ReactMiddleware({ base:"./example/site", logger });
+```
+
+The logger object should expose `.info`, `.warn` and `.error` methods.
 
 ## CSS
 The module works on the philosophy that styles, if not within the HTML component itself, should be as damn close to the corresponding component as possible.  CSS and layup are two sides of the same coin - they are not seperate concerns.
