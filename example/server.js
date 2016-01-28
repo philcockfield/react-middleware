@@ -19,7 +19,7 @@ const startWithMiddlewareInstanceMethod = () => {
 
 // Simulate a custom logger, eg. Winston.
 const logger = {
-  info(msg) { console.log(msg); }
+  info(...msg) { console.log(msg.join(" ")); }
 };
 
 const startWithStaticHelperMethod = () => {
