@@ -4,7 +4,7 @@ import R from 'ramda';
 import api from '../lib';
 
 
-describe.only('Main API (module)', function() {
+describe('Main API (module)', function() {
   it('the main API is a function', () => {
     expect(api).to.be.an.instanceof(Function);
   });
