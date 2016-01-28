@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased] - YYYY-MM-DD
 #### Added
 #### Changed
+- Referencing [Babel](https://babeljs.io/) dependencies via `js-babel-ui` and `js-babel-dev` modules.
+- Linting updated to use [AirBnB style guide](https://github.com/airbnb/javascript).
+
+
 #### Deprecated
 #### Removed
 #### Fixed
