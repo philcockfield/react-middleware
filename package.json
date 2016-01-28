@@ -17,6 +17,7 @@
     "prepublish": "npm test && npm run lint && npm run build"
   },
   "dependencies": {
+    "babel-loader": "^6.2.1",
     "chalk": "^1.1.1",
     "compression": "^1.5.2",
     "express": "^4.13.3",
