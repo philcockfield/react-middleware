@@ -28,6 +28,15 @@ describe("render: layout", function() {
     });
   });
 
+  it("sends `req` values to the React page props", (done) => {
+    render("/features?foo=123&bar=abc", (err, result) => {
+        expect(result).to.include('data-layout-url="/features"');
+        expect(result).to.include('data-body-url="/features"');
+        if (err) { return done(err); }
+        done();
+    });
+  });
+
   it("renders Home in the Mobile layout", (done) => {
     render("/mobile-layout", (err, result) => {
         expect(result).to.include("<html data-layout=\"mobile\"");

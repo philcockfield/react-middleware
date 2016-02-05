@@ -1,24 +1,30 @@
 export default {
   "/": {
-    page: "home",
+    page: "Home",
     title: "Home Page",
     props: {}
   },
 
+  "/features": {
+    page: "Features",
+    title: "Features Page",
+    props: {}
+  },
+
   "/mobile-layout": {
-    page: "home",
+    page: "Home",
     layout: "Mobile",
     title: "Mobile Home Page"
   },
 
   "/mobile-layout-func": {
-    page: (args) => "home",
+    page: (args) => "Home",
     layout: (args) => "Mobile",
     title: (args) => "Mobile Home Page (Func)"
   },
 
   "/root-layout": {
-    page: (args) => "home",
+    page: (args) => "Home",
     layout: (args) => "Root",
     title: (args) => "Mobile Home Page (Func)"
   }

@@ -13,7 +13,7 @@ export default class Html extends React.Component {
           <meta charSet="utf-8"/>
           <link href="/css" rel="stylesheet"/>
         </head>
-        <body className="desktop">
+        <body className="desktop" data-layout-url={ this.props.request.url.pathname }>
           <div id="root">{ this.props.body }</div>
         </body>
       </html>

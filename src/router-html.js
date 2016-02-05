@@ -58,6 +58,7 @@ export default (middleware, paths, routes, data) => {
 
   const render = (req, res, route) => {
     // Setup initial conditions.
+    const host = req.get('host');
     const params = Object.keys(req.params)
       .map(key => { req.params[key] = util.toType(req.params[key]); });
     const url = {
@@ -66,17 +67,22 @@ export default (middleware, paths, routes, data) => {
       pathname: Url.parse(req.url).pathname,
       query: req.query,
       pattern: route.pattern,
+      protocol: req.secure ? 'https:' : 'http',
+      host: host.split(':')[0],
+      port: host.split(':')[1],
     };
     const args = { url };
     route = asValues(route, args);
 
     // Prepare the page body.
+    const requestData = { url };
     const layoutData = getData(route, url);
     const pageProps = route.props || {};
     const pageData = pageProps.data || layoutData;
     if (pageData) {
       pageProps.data = pageData;
     }
+    pageProps.request = requestData;
     const pageBody = React.createElement(getPage(route), pageProps);
 
     // Prepare the root <Html> page props.
@@ -86,6 +92,7 @@ export default (middleware, paths, routes, data) => {
       data: layoutData,
       env: NODE_ENV,
       page: { name: route.page },
+      request: requestData,
     };
 
     // Convert the page-layout into HTML.
@@ -94,7 +101,7 @@ export default (middleware, paths, routes, data) => {
     res.send(html);
   };
 
-  // Regsiter each route as a GET handler.
+  // Register each route as a GET handler.
   Object.keys(routes).forEach(pattern => {
     const route = routes[pattern];
     route.pattern = pattern;
