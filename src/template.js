@@ -1,5 +1,5 @@
-import fs from "fs-extra";
-import fsPath from "path";
+import fs from 'fs-extra';
+import fsPath from 'path';
 
 
 
@@ -8,7 +8,7 @@ import fsPath from "path";
  */
 export default class Template {
   constructor(sourcePath, targetPath) {
-    this.sourcePath = fsPath.join(__dirname, "../templates", sourcePath);
+    this.sourcePath = fsPath.join(__dirname, '../templates', sourcePath);
     this.targetPath = targetPath;
   }
 

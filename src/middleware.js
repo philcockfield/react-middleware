@@ -1,45 +1,45 @@
-import R from "ramda";
-import chalk from "chalk";
-import express from "express";
-import compression from "compression";
-import css from "file-system-css";
-import middlewarePaths from "./paths";
-import routerCss from "./router-css";
-import routerHtml from "./router-html";
-import routerJs from "./router-js";
-import webpackBuilder from "./webpack-builder";
-import templatesFiles from "./templates";
-import log from "./log";
-import * as util from "./util";
+/* eslint max-len:0 new-cap:0 */
 
-const IS_PRODUCTION = process.env.NODE_ENV === "production";
+import R from 'ramda';
+import chalk from 'chalk';
+import express from 'express';
+import compression from 'compression';
+import css from 'file-system-css';
+import middlewarePaths from './paths';
+import routerCss from './router-css';
+import routerHtml from './router-html';
+import routerJs from './router-js';
+import webpackBuilder from './webpack-builder';
+import templatesFiles from './templates';
+import log from './log';
+import * as util from './util';
+
+const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
 
 
 const buildFunction = (middleware, paths, routes, loaders) => {
   let builtResponse;
-  return (options = {}) => {
-    return new Promise((resolve, reject) => {
-        if (builtResponse && options.force !== true) {
-          // Don't rebuild if compilation has already occured.
-          resolve(builtResponse);
-        } else {
-          webpackBuilder({ paths, routes, loaders })
-          .then(result => {
-              builtResponse = result;
-              resolve(result);
-          })
-          .catch(err => {
-              // Failed to build.
-              if (err.errors) {
-                console.error(chalk.red("FAILED to compile javascript.\n"));
-                err.errors.forEach(error => console.error(error.message));
-              }
-              reject(err);
-          });
+  return (options = {}) => new Promise((resolve, reject) => {
+    if (builtResponse && options.force !== true) {
+      // Don't rebuild if compilation has already occured.
+      resolve(builtResponse);
+    } else {
+      webpackBuilder({ paths, routes, loaders })
+      .then(result => {
+        builtResponse = result;
+        resolve(result);
+      })
+      .catch(err => {
+        // Failed to build.
+        if (err.errors) {
+          log.error(chalk.red('FAILED to compile javascript.\n'));
+          err.errors.forEach(error => log.error(error.message));
         }
-    });
-  };
+        reject(err);
+      });
+    }
+  });
 };
 
 
@@ -61,7 +61,7 @@ const buildFunction = (middleware, paths, routes, loaders) => {
  *                              This is useful as an API hook when creating a `react-middleware` package
  *                              to be shared as a module.
  *            - watch:          Flag indicating if changes to files should invalidate the cache.
- *                              True by default when not in "production".
+ *                              True by default when not in 'production'.
  *            - webpackLoaders: An array of webpack loaders to use.
  *                              Default loaders are replaced with this array.
  *            - logger:         Custom logger to use (object that exposes [info, warn, error] methods).
@@ -79,7 +79,7 @@ const api = (options = {}) => {
   const routes = templates.routes.import();
 
   middleware.use(compression());
-  middleware.use(express.static(paths.public, { maxage: "60 days" }));
+  middleware.use(express.static(paths.public, { maxage: '60 days' }));
 
   routerHtml(middleware, paths, routes, options.data);
   routerCss(middleware, paths, { watch });
@@ -117,48 +117,46 @@ api.start = (app, middleware, options = {}) => {
   // Extract startup values.
   if (R.is(Number, options)) { options = { port: options }; }
   const PORT = options.port || (IS_PRODUCTION ? 80 : 3030);
-  const NAME = options.name || "Server";
+  const NAME = options.name || 'Server';
   const SILENT = options.silent === undefined ? false : options.silent;
   const VERSION = options.version;
 
   const logger = middleware.logger;
   const logStarted = (js) => {
-        logger.info("");
-        logger.info(chalk.green(`Started: ${ NAME }`));
-        if (VERSION) {
-          logger.info(chalk.grey(" - version:"), VERSION);
-        }
-        logger.info(chalk.grey(" - port:   "), PORT);
-        logger.info(chalk.grey(" - env:    "), process.env.NODE_ENV || "development");
-        if (js.files.length > 0) {
-          const seconds = js.elapsed / 1000;
-          logger.info(chalk.grey(" - js:     "), `${ Math.round(seconds * 10) / 10 } second build time`);
-          js.files.forEach(item => {
-              logger.info(chalk.grey(`            - ${ item.path },`), util.fileSize(item.fileSize));
-          });
-        }
-        logger.info("");
-      };
+    logger.info('');
+    logger.info(chalk.green(`Started: ${ NAME }`));
+    if (VERSION) {
+      logger.info(chalk.grey(' - version:'), VERSION);
+    }
+    logger.info(chalk.grey(' - port:   '), PORT);
+    logger.info(chalk.grey(' - env:    '), process.env.NODE_ENV || 'development');
+    if (js.files.length > 0) {
+      const seconds = js.elapsed / 1000;
+      logger.info(chalk.grey(' - js:     '), `${ Math.round(seconds * 10) / 10 } second build time`);
+      js.files.forEach(item => {
+        logger.info(chalk.grey(`            - ${ item.path },`), util.fileSize(item.fileSize));
+      });
+    }
+    logger.info('');
+  };
 
   return new Promise((resolve, reject) => {
-      // Build the javascript (webpack).
-      logger.info(chalk.grey(`Starting '${ NAME }'...`));
-      middleware.build()
-      .then(js => {
-
-        // Configure and start the express server.
-        app
-          .use(middleware)
-          .listen(PORT, () => {
-                if (!SILENT) { logStarted(js); }
-                resolve();
-          });
-
-      })
-      .catch(err => {
-        logger.error("err", err);
-        reject(err);
-      });
+    // Build the javascript (webpack).
+    logger.info(chalk.grey(`Starting '${ NAME }'...`));
+    middleware.build()
+    .then(js => {
+      // Configure and start the express server.
+      app
+        .use(middleware)
+        .listen(PORT, () => {
+          if (!SILENT) { logStarted(js); }
+          resolve();
+        });
+    })
+    .catch(err => {
+      logger.error('err', err);
+      reject(err);
+    });
   });
 };
 
@@ -166,11 +164,11 @@ api.start = (app, middleware, options = {}) => {
 
 /**
  * Initalizes the default folder/template structure.
- * @param {string} path:  The base-path. Use "./" to create
+ * @param {string} path:  The base-path. Use './' to create
  *                        relative to the root of the host module.
  */
 api.init = (path) => {
-  if (!R.is(String, path)) { path = "./site"; }
+  if (!R.is(String, path)) { path = './site'; }
   api({ base: path }).templates.createSync();
   return api;
 };
