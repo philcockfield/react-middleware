@@ -1,7 +1,7 @@
 "use strict"
 import { expect } from "chai";
 import R from 'ramda';
-import api from '../lib';
+import api from '../src';
 
 
 describe('Main API (module)', function() {
