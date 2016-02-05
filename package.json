@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "babel-loader": "^6.2.1",
+    "js-babel-ui": "^6.0.0",
     "chalk": "^1.1.1",
     "compression": "^1.5.2",
     "express": "^4.13.3",
@@ -31,7 +32,6 @@
   },
   "devDependencies": {
     "chai": "^2.2.0",
-    "js-babel-ui": "^6.0.0",
     "js-babel-dev": "^6.0.0",
     "mocha": "^2.2.1",
     "sinon": "^1.16.1",
