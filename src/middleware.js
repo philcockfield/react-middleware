@@ -5,6 +5,7 @@ import chalk from 'chalk';
 import express from 'express';
 import compression from 'compression';
 import css from 'file-system-css';
+import filesize from 'filesize';
 import middlewarePaths from './paths';
 import routerCss from './router-css';
 import routerHtml from './router-html';
@@ -12,7 +13,6 @@ import routerJs from './router-js';
 import webpackBuilder from './webpack-builder';
 import templatesFiles from './templates';
 import log from './log';
-import * as util from './util';
 
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
@@ -134,7 +134,7 @@ api.start = (app, middleware, options = {}) => {
       const seconds = js.elapsed / 1000;
       logger.info(chalk.grey(' - js:     '), `${ Math.round(seconds * 10) / 10 } second build time`);
       js.files.forEach(item => {
-        logger.info(chalk.grey(`            - ${ item.path },`), util.fileSize(item.fileSize));
+        logger.info(chalk.grey(`            - ${ item.path },`), filesize(item.fileSize));
       });
     }
     logger.info('');
