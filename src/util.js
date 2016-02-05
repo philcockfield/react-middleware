@@ -1,5 +1,3 @@
-'use strict'
-
 // See: http://stackoverflow.com/a/14919494/1745661
 export const fileSize = (bytes, si = true) => {
   const threshold = si ? 1000 : 1024;
