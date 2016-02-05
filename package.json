@@ -4,7 +4,7 @@
   "description": "Connect middleware for serving React components from a standard folder structure.",
   "main": "./lib",
   "engines": {
-    "node": "^5.5.0"
+    "node": "^5.4.0"
   },
   "scripts": {
     "start": "node ./example",
