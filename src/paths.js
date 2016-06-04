@@ -18,7 +18,7 @@ const pathsStatus = (paths) => {
 const pathsExist = (paths) => {
   const values = R.values(pathsStatus(paths));
   const existsTotal = R.pipe(
-      R.map(exists => exists ? 1 : 0),
+      R.map(exists => (exists ? 1 : 0)),
       R.sum
     )(values);
   if (existsTotal === values.length) { return true; }

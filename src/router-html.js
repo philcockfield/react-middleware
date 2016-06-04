@@ -1,3 +1,5 @@
+/* eslint global-require:0 */
+
 import R from 'ramda';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
@@ -35,6 +37,8 @@ const getFilePath = (basePath, name, extension) => {
   // Look for the file within a folder.
   path = fsPath.join(basePath, name, `${ name }.${ extension }`);
   if (fs.existsSync(path)) { return path; }
+
+  return undefined;
 };
 
 
@@ -54,13 +58,16 @@ export default (middleware, paths, routes, data) => {
     return require(path).default;
   };
 
-  const getData = (route, url) => R.is(Function, data) ? data({ route, url }) : data;
+  function getData(route, url) {
+    return R.is(Function, data) ? data({ route, url }) : data;
+  }
 
   const render = (req, res, route) => {
     // Setup initial conditions.
     const host = req.get('host');
-    const params = Object.keys(req.params)
-      .map(key => { req.params[key] = util.toType(req.params[key]); });
+    const params = Object
+      .keys(req.params)
+      .forEach(key => { req.params[key] = util.toType(req.params[key]); });
     const url = {
       params,
       path: req.url,

@@ -66,6 +66,8 @@ export default (middleware, paths, options = {}) => {
 
       default: // No match.
     }
+
+    return undefined;
   };
 
   const queryToSourcePaths = (query) => {
@@ -91,7 +93,7 @@ export default (middleware, paths, options = {}) => {
     if (!R.is(Array, sourcePaths)) { sourcePaths = [sourcePaths]; }
     sourcePaths = R.flatten(sourcePaths);
     if (sourcePaths.length === 0) {
-      return res.status(404).send({ message: `No CSS paths to load.` });
+      return res.status(404).send({ message: 'No CSS paths to load.' });
     }
 
     // Compile the CSS (or retrieve from cache).
@@ -115,11 +117,13 @@ export default (middleware, paths, options = {}) => {
       log.error(chalk.red(args.message));
       res.status(500).send(args);
     });
+
+    return undefined;
   };
 
   const renderGroup = (req, res, keys = []) => {
     const query = {};
-    keys.forEach(key => query[key] = true);
+    keys.forEach(key => { query[key] = true; });
     render(req, res, queryToSourcePaths(query));
   };
 

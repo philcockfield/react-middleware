@@ -111,8 +111,8 @@ const api = (options = {}) => {
  */
 api.start = (app, middleware, options = {}) => {
   // Ensure required parameters were passed.
-  if (!R.is(Function, app)) { throw new Error(`Start Method: An express instance must be specified.`); }
-  if (!R.is(Function, middleware)) { throw new Error(`Start Method: The [react-middleware] instance must be specified.`); }
+  if (!R.is(Function, app)) { throw new Error('Start Method: An express instance must be specified.'); }
+  if (!R.is(Function, middleware)) { throw new Error('Start Method: The [react-middleware] instance must be specified.'); }
 
   // Extract startup values.
   if (R.is(Number, options)) { options = { port: options }; }

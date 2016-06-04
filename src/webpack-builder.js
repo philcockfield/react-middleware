@@ -107,7 +107,7 @@ export default (settings = {}) => {
     });
   };
   add(`${ paths.scripts }/index.js`, 'base.js');
-  R.values(routes).map(item => {
+  R.values(routes).forEach(item => {
     const entry = `${ paths.pages }/${ item.page }/${ item.entry || 'entry.js' }`;
     if (fs.existsSync(entry)) {
       add(entry, `pages/${ item.page }.js`);
