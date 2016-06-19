@@ -1,10 +1,10 @@
-import R from "ramda";
-import express from "express";
-import ReactMiddleware from "../src";
+import R from 'ramda';
+import express from 'express';
+import ReactMiddleware from '../src';
 
 
-const PATH = "./example/site";
-
+const PATH = './example/site';
+const PORT = 1234;
 
 // ReactMiddleware.init(PATH);
 
@@ -12,21 +12,23 @@ const PATH = "./example/site";
 
 const startWithMiddlewareInstanceMethod = () => {
     const middleware = ReactMiddleware({ base: PATH });
-    middleware.start()
-    .then(() => console.log("Start Callback"));
+    middleware
+      .start()
+      .then(() => console.log('Start Callback'));
 };
 
 
 // Simulate a custom logger, eg. Winston.
 const logger = {
-  info(...msg) { console.log(msg.join(" ")); }
+  info(...msg) { console.log(msg.join(' ')); }
 };
 
 const startWithStaticHelperMethod = () => {
     const app = express();
     const middleware = ReactMiddleware({ base: PATH, logger });
-    ReactMiddleware.start(app, middleware, { port: 3030 })
-    .then(() => console.log("Start Callback"));
+    ReactMiddleware
+      .start(app, middleware, { port: PORT })
+      .then(() => console.log('Start Callback'));
   };
 
 
@@ -39,8 +41,8 @@ const startWithExpress = () => {
     .then(() => {
         app
           .use(site)
-          .listen(3030, () => {
-              console.log("Listening on port", 3030);
+          .listen(PORT, () => {
+              console.log('Listening on port', PORT);
           });
     });
   };
