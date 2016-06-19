@@ -1,2 +1,3 @@
-require("babel-core/register")();
-require("./server");
+require('babel-polyfill');
+require('babel-register');
+require('./server');

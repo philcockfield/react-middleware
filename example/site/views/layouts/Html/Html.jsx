@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 
 /**
@@ -26,11 +26,11 @@ export default class Html extends React.Component {
 Html.propTypes = {
   title: React.PropTypes.string,
   body: React.PropTypes.node,
-  env: React.PropTypes.oneOf(["production", "development"]),
+  env: React.PropTypes.oneOf(['production', 'development']),
   page: React.PropTypes.shape({
     name: React.PropTypes.string.isRequired,
   }).isRequired
 };
 Html.defaultProps = {
-  title: "Untitled"
+  title: 'Untitled'
 };

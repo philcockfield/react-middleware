@@ -3,6 +3,6 @@
  * For React specific client-side code, use the [views/pages].
  */
 
-if (typeof window !== "undefined") {
-  console.log("Loaded: /scripts (global)");
+if (typeof window !== 'undefined') {
+  console.log('Loaded: /scripts (global)');
 }

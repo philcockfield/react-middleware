@@ -3,12 +3,14 @@ import Promise from 'bluebird';
 import webpack from 'webpack';
 import fs from 'fs-extra';
 import fsPath from 'path';
+import { closestModulePath } from './paths';
 
 export const BUILD_PATH = fsPath.resolve('./.build/webpack');
 const NODE_MODULES_PATH = fsPath.resolve('./node_modules');
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
-const modulePath = (path) => fsPath.join(NODE_MODULES_PATH, path);
+
+const modulePath = (moduleName) => closestModulePath(fsPath.resolve('.'), moduleName);
 
 
 const SETTINGS = {

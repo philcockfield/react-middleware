@@ -1,17 +1,17 @@
 export default {
-  "/": {
-    page: "Home",
-    title: "Home Page",
+  '/': {
+    page: 'Home',
+    title: 'Home Page',
     props: {},
-    // entry: "client.js"
+    // entry: 'client.js'
   },
 
-  "/pricing": {
-    page: "Pricing"
+  '/pricing': {
+    page: 'Pricing'
   },
 
-  "/features": {
-    page: "Features"
+  '/features': {
+    page: 'Features'
   },
 
 };
